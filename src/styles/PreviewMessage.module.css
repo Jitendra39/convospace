@@ -1,0 +1,33 @@
+.MainPreview{
+  color: white;
+  background-color: rgb(73, 179, 170);
+  min-width: 120px;
+  width: fit-content;
+  max-width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 70px;
+  right: 50px;
+}
+.Emoji{
+  align-items: center;
+   margin: auto;
+   margin-top: 10px;
+   padding: auto;
+}
+.previewName{
+  display: flex;
+  flex-direction: row;
+}
+.CloseIcon{
+  justify-content: space-between;
+   margin-left: 25px;
+   font-size: 1.2rem;
+   cursor: pointer;
+}
+.CloseIcon :hover{
+  color: rgb(255, 0, 0);
+}

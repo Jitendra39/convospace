@@ -1,0 +1,75 @@
+body {
+  background: #654ea3;
+   overflow: hidden;
+  background: -webkit-linear-gradient(to right, #654ea3, #eaafc8);
+  background: linear-gradient(to right, #654ea3, #eaafc8);
+  min-height: 100vh;
+}
+
+@media screen and (min-width: 768px) {
+.profile-main{
+  width: 70vw;
+}
+
+}
+
+@media screen and (max-width: 767px) {
+
+  .profile-main{
+    width: 100vw;
+    max-height: 90vh;
+  }
+}
+
+.profile-header {
+  transform: translateY(5rem);
+  display: flex;
+}
+ 
+.Profile-Photo{
+  display: flex;
+  flex-direction: column;
+}
+.Profile-Photo a{
+  margin-top: 10px;
+}
+.send-Icon{
+  margin-left: 10px;
+}
+.image-not-available{
+  border: 1px solid silver;
+  text-align: center;
+  padding: 40px;
+  font-weight: 500;
+  background-color: aliceblue;
+}
+.profile-locaton{
+  display: flex;
+}
+.profile-location-icon{
+  margin-top: 5px;
+  margin-right: 2px;
+}
+
+
+
+/* Profile Edit */
+.name-edit{
+  display: flex;
+}
+.name-edit h4{
+  margin-right: 15px;
+}
+.name-edit2{
+  display: flex;
+}
+
+.name-edit2 input{
+  color: black;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+.name-edit2 h4{
+  color: greenyellow;
+  margin-left: 5px;
+}

@@ -1,0 +1,46 @@
+.Home-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.Home-header {
+  width: 5vw;
+}
+
+.Home-content {
+  margin-top: 20px;
+  overflow-y: scroll;
+  width: 60vw;
+ 
+  /* scrollbar-color: #888 #f1f1f1;  */
+}
+
+.Home-content::-webkit-scrollbar {
+  display: none;
+}
+
+.Recommoded-Friends {
+  width: 30vw;
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+  .Home-header {
+   width: 0px;
+  }
+  .Home-content {
+    
+    margin-bottom: 48px;
+    overflow-y: scroll;
+    width: 100vw;
+   
+    /* scrollbar-color: #888 #f1f1f1;  */
+  }
+  .Recommoded-Friends {
+   display: none;
+}
+}

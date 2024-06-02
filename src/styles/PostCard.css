@@ -1,0 +1,29 @@
+.PostCard{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
+  /* justify-content: space-evenly; */
+}
+
+.post-card-item{
+  margin: 10px auto;
+}
+
+.Card-Image{
+  height: fit-content;
+  max-height: 400px;
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+  .post-card-item{
+    margin: 10px;
+  }
+  .Card-Image{
+    height: fit-content;
+    max-height: 300px;
+  }
+}
