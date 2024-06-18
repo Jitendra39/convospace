@@ -18,7 +18,7 @@ import CreatPost from './components/Home Page/CreatPost.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+ 
     <SocialMediaContextProvider>  
     <ChatContextProvider>
       <Router>
@@ -35,5 +35,5 @@ root.render(
       </Router>
       </ChatContextProvider>
     </SocialMediaContextProvider>
-  </React.StrictMode>
+ 
 );
