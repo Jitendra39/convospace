@@ -1,4 +1,7 @@
  
+
+// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getStorage } from "firebase/storage";
@@ -15,13 +18,7 @@ import {
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "XXXXXXXXXXXXXXXXXXXXXXX",
-  authDomain: "XXXXXXXXXXXXXXXXXXXXXXXXX",
-  projectId: "XXXXXXXXXXXXXXXXX",
-  storageBucket:  "XXXXXXXXXXXXXXXXX",
-  messagingSenderId:  "XXXXXXXXXXXXXXXXX",
-  appId: "XXXXXXXXXXXXXXXXXXXXXXXXX",
-  measurementId:  "XXXXXXXXXXXXXXXXXXXXXXXXX",
+/////
 };
 
 // Initialize Firebase
@@ -41,20 +38,7 @@ const initializeAuth = async () => {
   await setPersistence(auth, browserLocalPersistence);
 };
 
-// export const messaging = getMessaging(app)
-// export const generateToken = async () =>{
-//   const permission = await Notification.requestPermission();
-//   console.log(permission)
-//  if(permission === "granted")
-//   {
-//     const token = await getToken(messaging, {
-//       vapidKey: "BLgPbm1Fo8Pav5slySA-WEWK5i7U6DVvBORAwwOzq_7qMbkoNpqxXJsbQao0TIGJmjYjRMbyo_HSETaSOMPsPXY"
-//     })
-//     console.log(token)
-//   }
-
-
-// }
+ 
 
 
 
