@@ -1,0 +1,37 @@
+// Give the service worker access to Firebase Messaging.
+// Note that you can only use Firebase Messaging here. Other Firebase libraries
+// are not available in the service worker.
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+
+// Initialize the Firebase app in the service worker by passing in
+// your app's Firebase config object.
+// https://firebase.google.com/docs/web/setup#config-object
+firebase.initializeApp({
+  apiKey: "AIzaSyDWNubtOLkM-oYGA6MvW2_XQ6wgtr0O32Q",
+  authDomain: "chat-app-f5d74.firebaseapp.com",
+  projectId: "chat-app-f5d74",
+  storageBucket: "chat-app-f5d74.appspot.com",
+  messagingSenderId: "659244704628",
+  appId: "1:659244704628:web:12e3725092f5b7def50221",
+  measurementId: "G-DZGHV5WZVW",
+});
+
+// Retrieve an instance of Firebase Messaging so that it can handle background
+// messages.
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log(
+    '[firebase-messaging-sw.js] Received background message ',
+    payload
+  );
+  // Customize notification here
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: payload.notification.image,
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});

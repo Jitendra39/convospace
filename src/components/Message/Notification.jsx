@@ -17,12 +17,12 @@ export default function ToastNotification({notify, setNotify, notificationType, 
           setTimeout(() => {
             setClose(true);
             {
-              notify && 
+              notify &&
                 setNotify('');
             
             }
             {
-              notificationType &&   setNotificationType('');
+              notificationType && setNotificationType('');
 
             }
           }, 100);
@@ -45,28 +45,7 @@ export default function ToastNotification({notify, setNotify, notificationType, 
       setNotificationType('');
     }, 100);
   };
-
-
-
-   
-  // const [status, setStatus] = React.useState(navigator.onLine);
-
-  // const setOnline = () => setStatus(true);
-  // const setOffline = () => setStatus(false);
-
-  // React.useEffect(() => {
-  //     window.addEventListener('online', setOnline);
-  //     window.addEventListener('offline', setOffline);
-
-  //     return () => {
-  //         window.removeEventListener('online', setOnline);
-  //         window.removeEventListener('offline', setOffline);
-  //     };
-  // }, []);
-
-
-
-
+ 
   return (
     <>
       <div className="notification">

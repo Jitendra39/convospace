@@ -1,0 +1,31 @@
+.find-friend-main{
+  width: 100%;
+  height: 99%;
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+ 
+  opacity: 0.8;
+}
+.search-component{
+  padding-top: 25px; 
+  
+}
+
+.friend-list{
+  width:  fit-content;
+  height: 80%;
+  margin-top: 15px;
+  align-self: center;
+  padding-top:10px ;
+
+}
+
+@media screen and (max-width:1000px) {
+  .find-friend-main{
+    min-width: 95vw;
+    width: 99vw;
+    min-height: 98vh;
+    
+  }
+}

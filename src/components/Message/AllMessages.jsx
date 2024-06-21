@@ -18,7 +18,7 @@ function AllMessages({ message, currentUser, data }) {
       
       try {
         const chatDocSnap = await getDoc(chatDocRef);
-          console.log("Chat document exists", chatDocSnap);
+       
         if (chatDocSnap.exists()) {
           const chatData = chatDocSnap.data();
           const messages = chatData.messages || [];
@@ -26,10 +26,10 @@ function AllMessages({ message, currentUser, data }) {
           const messageToDelete = messages.find(m => m.id === message.id);
 
           if (messageToDelete) {
-            await updateDoc(chatDocRef, {
+           updateDoc(chatDocRef, {
               messages: arrayRemove(messageToDelete)
             });
-            console.log("Message deleted successfully");
+ 
           }
         }
       } catch (err) {
@@ -76,10 +76,9 @@ function AllMessages({ message, currentUser, data }) {
                         className="MessageWithImg"
                       />
                     ):( message.type && message.type ==="video" &&
-                      <video width="300" height="200" controls>
-                      <source src={message.img} type="video/mp4" />
-                      
-                    </video>
+                    <video className="Card-Image" autoPlay muted controls>
+                    <source src={message.img} type="video/mp4" />
+                  </video>
                     )}
                     </div>
                     <div className='messageText'>
@@ -95,7 +94,7 @@ function AllMessages({ message, currentUser, data }) {
                         : "conversation-item-time"
                     }
                   >
-                    {console.log("emoji ",message.src)}
+                     
                  {message.time && message.time}
                   </div>
                   </div>

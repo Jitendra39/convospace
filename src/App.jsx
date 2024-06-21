@@ -3,21 +3,22 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
 import { BiMessageRoundedError } from "react-icons/bi";
-import { SocialMediaContext } from "./store/LogicStore";
+import { SocialMediaContext } from "./store/GeneralStore";
 import { auth } from "./store/firebaseConfig";
 import NetworkConnection from "./components/NetworkConnection";
 
 function App() {
   const navigate = useNavigate();
-  const { currentUser} = useContext(SocialMediaContext);
- 
-    if(!currentUser){
-      navigate('/SignUp');
-    }
+  const { currentUser } = useContext(SocialMediaContext);
+
+  if (!currentUser) {
+    navigate("/SignUp");
+  }
+
+  
 
   return (
     <>
-
       <section className="chat-section">
         <div className="chat-container">
           <Sidebar />

@@ -2,28 +2,41 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  
-  /* justify-content: space-evenly; */
 }
 
 .post-card-item{
+  min-width: 85%; 
+  max-width: 90%;
   margin: 10px auto;
 }
 
 .Card-Image{
   height: fit-content;
   max-height: 400px;
+  object-fit: cover;
+  width: 100%;
 }
 
+.favoriteIcon{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.favoriteIcon-count{
+ font-size: 0.8rem;
+}
 
 @media screen and (max-width: 767px) {
 
   .post-card-item{
-    margin: 10px;
+    width: 97vw;
+    margin: auto;
+    margin-bottom: 19px;
   }
   .Card-Image{
     height: fit-content;
     max-height: 300px;
   }
+
 }

@@ -1,0 +1,106 @@
+.notificationTabMain{
+  width: 100vw;
+  height: 100vw;
+  margin: 0px;
+  padding: 0;
+  background-color: rgba(205, 232, 229, 0.5); 
+  backdrop-filter: blur(8px);
+}
+.subNotificationTabMain{
+  min-width: 300px;
+  max-width: 500px;
+  min-height: 99vh;
+   width: 60vw;
+    margin: auto;
+    background-color: #F9F9E0;
+}
+
+.subNotificationTabMain h2{
+  padding: 10px 10px;
+  color: #00ADB5;
+}
+ 
+.contentMessages {
+  overflow-y: auto;
+  height: fit-content; 
+  /* padding-top: 40px; */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.contentMessagesList {
+  list-style-type: none;
+  padding: 8px 0;
+  border-radius: 10px;
+}
+.contentMessagesListItem a {
+  border: 1px #FF9EAA dashed;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #2b2929;
+  padding: 6px 16px;
+  background-color: #e6e6d3;
+  border-radius: 5px;
+}
+.contentMessagesListItem a:hover {
+  background-color: #3AA6B9;
+  color: white;
+}
+.contentMessageImage {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+.contentMessageInfo {
+  display: grid;
+  margin-right: 12px;
+  width: 100%;
+  font-size: 1rem;
+}
+.contentMessageName1 {
+  margin-bottom: 4px;
+}
+.contentMessageText {
+  font-size: 13px;
+  color: var(--slate-400);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.contentMessageMore {
+    padding-right: 15px;
+
+}
+
+@media screen and (max-width: 767px) {
+  .subNotificationTabMain{
+    min-height: calc(100vh - 58px);
+  }
+  .conversation,
+  .notificationTabMain {
+    padding-left: unset;
+  }
+  .subNotificationTabMain {
+    left: unset;
+    z-index: 10;
+    width: 100%;
+  }
+  .chat-content {
+    position: relative;
+    height: calc(100% - 48px);
+  }
+  .conversation.active {
+    position: relative;
+    z-index: 20;
+  }
+  .conversation-back {
+    display: flex;
+  }
+  .conversation-default.active {
+    display: none;
+    padding: 16px;
+  }
+}
