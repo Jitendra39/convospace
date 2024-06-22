@@ -3,7 +3,7 @@
 
 ViChat is a social media web application built with React and firebase that allows users to connect, chat, and share posts with their friends.
 
-![ViChat Preview]((https://chat-app-f5d74.web.app/))
+![ViChat Preview]([./https://firebasestorage.googleapis.com/v0/b/chat-app-f5d74.appspot.com/o/Screenshot%202024-06-22%20104918.png?alt=media&token=ee79db52-51fa-4f6a-854b-f33e3f4546d4)
 
 ## Table of Contents
 
@@ -56,8 +56,3 @@ Check out the live demo [here](https://chat-app-f5d74.web.app/)
 - **Manage Profile**: Update profile information and profile picture.
 - **Notifications**: Receive alerts for new messages and friend requests.
 
-
-## License
-- This project is licensed under the MIT License - see the LICENSE file for details.
-
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
