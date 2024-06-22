@@ -3,7 +3,7 @@
 
 ViChat is a social media web application built with React and firebase that allows users to connect, chat, and share posts with their friends.
 
-[![ViChat Preview](https://firebasestorage.googleapis.com/v0/b/chat-app-f5d74.appspot.com/o/Screenshot%202024-06-22%20104918.png?alt=media&token=ee79db52-51fa-4f6a-854b-f33e3f4546d4)](https://snazzy-scone-348db8.netlify.app/)
+[![ViChat Preview](https://firebasestorage.googleapis.com/v0/b/chat-app-f5d74.appspot.com/o/Screenshot%202024-06-22%20104918.png?alt=media&token=ee79db52-51fa-4f6a-854b-f33e3f4546d4)](https://convospace.netlify.app/)
 
 
 
@@ -27,7 +27,7 @@ ViChat is a social media web application built with React and firebase that allo
 - **Responsive Design**: Responsive user interface using MUI and Bootstrap components.
 ## Demo
 
-Check out the live demo [here](https://snazzy-scone-348db8.netlify.app/) 
+Check out the live demo [here](https://convospace.netlify.app/) 
 
 ## Technologies Used
 
