@@ -46,23 +46,6 @@ Check out the live demo [here](https://chat-app-f5d74.web.app/)
   - Firebase Cloud Functions for backend logic 
 
 
-## Installation
-
-To run ViChat locally, follow these steps:
-
-1. Clone the repository:
-
-    git clone https://github.com/Jitendra39/Vichat.git
-    cd Vichat
-
-
-2. Install dependencies:
-
-   npm install
-  
-3. Start the servers:
-   npm start
-
 
 ## Usage
 
