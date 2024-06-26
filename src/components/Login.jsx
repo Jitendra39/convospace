@@ -23,7 +23,7 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+ 
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -61,6 +61,12 @@ function Login() {
       console.error("Authentication Error:", error);
     }
   };
+  const testLogin = (e) => {
+    setEmail("abcde@gmail.com");
+    setPassword("abcde@1234");
+    handleLogin(e);
+  };
+  
 
    return (
     <div class="bg-img2">
@@ -96,6 +102,10 @@ function Login() {
               onClick={(e) => handleLogin(e)}
               value="LOGIN"
             />
+          </div>
+          <br/>
+          <div class="field1" onClick={(e) =>testLogin(e)}>
+           <p>TEST</p>
           </div>
         </form>
         <div class="login">Or login with</div>

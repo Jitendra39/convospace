@@ -31,7 +31,9 @@ function Profile() {
 
   const [requestStatus, setRequestStatus] = useState("Add Friend");
   const [doneProfile, setDoneProfile] = useState(false);
-  const [deletePost, setDeletePost] = useState("");
+
+  const [deletePost, setDeletePost] = useState(null);
+
   const [currentUser1, setCurrentUser] = useState("");
   const { currentUser} = useContext(SocialMediaContext);
   const [userPosts, setUserPosts] = useState([]);
@@ -72,6 +74,7 @@ function Profile() {
     }
   };
 
+
   const handleClickOutSide = (event) => {
     if (
       postClickedRef.current &&
@@ -93,10 +96,16 @@ function Profile() {
     };
   }, [postClicked]);
 
+
+
   const handleDeletePost = async () => {
+
+console.log(deletePost.id)
     if (!currentUser.uid || currentUser.uid !== id) return;
+ 
     try {
-      const docRef = doc(db, "PostData", deletePost);
+       
+      const docRef = doc(db, "PostData", deletePost.id);
       const docRef2 = doc(db, "user-posts", currentUser.uid);
 
      await deleteDoc(docRef);
@@ -108,11 +117,13 @@ function Profile() {
       setDeletePost("");
       setPostClicked(null);
       getData();
-    } catch (err) {}
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   const writeUserData = () => {
-    if(requestStatus === "Friends") navigate(`/User/${currentUser.displayName}/FriendsLobby`);
+    // if(requestStatus === "Friends") navigate(`/User/${currentUser.displayName}/FriendsLobby`);
    
     if (id === currentUser.uid || requestStatus !== "Add Friend") return;
     
@@ -132,6 +143,8 @@ function Profile() {
         console.log(err);
       });
   };
+
+
 
   async function fetchData() {
     const dbRef = ref(realTimeDataBase);
@@ -166,28 +179,17 @@ function Profile() {
     }
   }
 
-  async function deleteData() {
-    const dataRef = ref(
-      realTimeDataBase,
-      `notification/${id}/${currentUser.uid}`
-    );
-    try {
-      await remove(dataRef);
-      console.log("remove success full");
-    } catch (err) {
-      console.log(err);
-    }
-  }
+ 
 
   useEffect(() => {
-    if(currentUser.uid === id ) setRequestStatus( "Friends");
+  
     fetchData();
     userData(id);
     getData();
    
   }, [id]);
 
-
+  
 
   const handleClickCopy = async() =>{
     await navigator.clipboard.writeText(id);
@@ -254,14 +256,15 @@ function Profile() {
                 <div class="container">
                   <div class="btn" onClick={writeUserData}>
                     <a>
-                     {requestStatus}
-                      {/* {currentUser.uid === id ? "Friends" : `${requestStatus}`} */}
+                 
+                     {/* {requestStatus} */}
+                      {currentUser.uid === id ? "Friends" : `${requestStatus}`}
                     </a>
                   </div>
                   <div class="btn" onClick={() => navigate(`/User/${currentUser.displayName}/FriendsLobby`)}>
                     <a>Message</a>
                   </div>
-                  <div class="btn" onClick={deleteData}>
+                  <div class="btn">
                     <a>Share</a>
                   </div>
                 </div>
@@ -328,7 +331,7 @@ function Profile() {
           )}
 
           {deletePost && (
-            <AlertDialog work={handleDeletePost} load={setDeletePost} />
+            <AlertDialog work={handleDeletePost} load={setDeletePost} message={deletePost.message}/>
           )}
         </div>
       ) : (

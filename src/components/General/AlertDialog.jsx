@@ -6,10 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function AlertDialog({work, load}) {
+export default function AlertDialog({work, load, message}) {
   const [open, setOpen] = React.useState(true);
-
- 
 
   const handleClose = () => {
     load('')
@@ -25,7 +23,8 @@ export default function AlertDialog({work, load}) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Do you want to delete your post?"}
+          {/* {"Do you want to delete your post?"} */}
+          {message}
         </DialogTitle>
   
         <DialogActions>

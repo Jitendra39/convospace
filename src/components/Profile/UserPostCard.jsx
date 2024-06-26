@@ -33,6 +33,11 @@ function UserPost({ post, deletePost}) {
 
     return format(date, "MMMM d, yyyy");
   };
+
+  const handleDeleteClick = () => {
+    deletePost({ id: post.id, message: "Do you want to delete your post?" });
+  };
+
     return (
     <>
  
@@ -42,7 +47,7 @@ function UserPost({ post, deletePost}) {
               <Avatar alt="avatar" src={post.photoURL} aria-label="recipe" />
             }
             action={
-              <IconButton aria-label="settings" onClick={() => deletePost(post.id)}>
+              <IconButton aria-label="settings" onClick={handleDeleteClick}>
                { <DeleteForeverIcon/>}
               </IconButton>
             }

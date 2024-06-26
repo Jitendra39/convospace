@@ -71,7 +71,7 @@ function DirectMessage() {
   const { currentUser } = useContext(SocialMediaContext);
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  // const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [messages, setMessages] = useState([]);
   const { data } = useContext(ChatContext);
   const [emoji, setEmoji] = useState(null);
@@ -185,24 +185,25 @@ function DirectMessage() {
             // });
 
             setText("");
-          } else {
-            await updateDoc(doc(db, "chats", chatId), {
-              messages: arrayUnion({
-                id: uuid(),
-                text: text || "",
-                time: new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }),
-                senderId: currentUser.uid,
-                date: Timestamp.now(),
-                img: emoji,
-                type: "image",
-              }),
-            });
-            setText("");
-            setEmoji(null);
           }
+          //} else {
+          //   await updateDoc(doc(db, "chats", chatId), {
+          //     messages: arrayUnion({
+          //       id: uuid(),
+          //       text: text || "",
+          //       time: new Date().toLocaleTimeString([], {
+          //         hour: "2-digit",
+          //         minute: "2-digit",
+          //       }),
+          //       senderId: currentUser.uid,
+          //       date: Timestamp.now(),
+          //       img: emoji,
+          //       type: "image",
+          //     }),
+          //   });
+          //   setText("");
+          //   setEmoji(null);
+          // }
         } catch (error) {
           console.error("Error updating chat:", error);
         }
@@ -284,7 +285,7 @@ function DirectMessage() {
                   />
                 ))}
             </ul>
-            {emoji && !showEmojiPicker && (
+            {/* {emoji && !showEmojiPicker && (
               <PreviewMessages emoji={emoji} setEmoji={setEmoji} />
             )}
             {showEmojiPicker && (
@@ -292,7 +293,7 @@ function DirectMessage() {
                 setEmoji={setEmoji}
                 setShowEmojiPicker={setShowEmojiPicker}
               />
-            )}
+            )} */}
 
             {notify && (
               <Notification
@@ -342,7 +343,7 @@ function DirectMessage() {
                 )}
               </button>
 
-              <button
+              {/* <button
                 type="button"
                 class="conversation-form-record-2"
                 onClick={() => {
@@ -350,7 +351,7 @@ function DirectMessage() {
                 }}
               >
                 <FaRegFaceSmileWink class="ri-emotion-line" />
-              </button>
+              </button> */}
             </div>
             <button
               type="button"

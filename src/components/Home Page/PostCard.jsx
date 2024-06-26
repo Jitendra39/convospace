@@ -20,6 +20,7 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../store/firebaseConfig";
 import { SocialMediaContext } from "../../store/GeneralStore";
 import { homePageContext } from "../../store/HomePageContext";
+import { useNavigate } from "react-router";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,6 +34,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard() {
+  const navigate = useNavigate()
   const { currentUser } = React.useContext(SocialMediaContext);
   const [thumbDown, setThumbDown] = React.useState({});
   const [favorite, setFavorite] = React.useState({});
@@ -156,17 +158,19 @@ export default function PostCard() {
   };
 
   const handleClickProfile = (id) =>{
-    navigate(`/Profile/${userInfo}`);
+    navigate(`/Profile/${id}`);
   }
 
   return (
     <div className="PostCard">
-     
+
       {postsdata && postsdata.posts.map((post) => (
+        
         <div className="post-card-item" key={post.id}>
+          
           <Card sx={{ maxWidth: 570 }}>
             <CardHeader 
-            
+                  onClick={() => handleClickProfile(post.uid)} 
               avatar={
                 <Avatar alt="avatar" src={post.photoURL} aria-label="recipe" />
               }

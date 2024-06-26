@@ -1,19 +1,6 @@
 import { IoSearchOutline } from "react-icons/io5";
 import React, { useContext, useState } from "react";
-import { ChatContext } from "../store/ChatContext";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { db } from "../store/firebaseConfig";
+
 import { SocialMediaContext } from "../store/GeneralStore";
  
 function Search() {

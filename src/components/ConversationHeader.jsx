@@ -25,7 +25,7 @@ import AlertDialog from "./General/AlertDialog";
 
   return (
     <>
-   {alert && <AlertDialog work={handleDelete} load={setAlert}/>}
+   {alert && <AlertDialog work={handleDelete} load={setAlert} message={alert}/>}
       <div class="conversation-top">
         <button
           type="button"
@@ -57,7 +57,7 @@ import AlertDialog from "./General/AlertDialog";
           <button type="button">
             <MdDeleteForever
               className="conversation-buttons-name"
-              onClick={() =>setAlert('true')}
+              onClick={() =>setAlert("Are you sure you want to unfriend this person? This action will also delete all messages.")}
             />
           </button>
         </div>

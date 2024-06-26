@@ -44,6 +44,7 @@ function ProfileEdit({ setDoneProfile, doneProfile }) {
   };
 
   const handleDoneProfile = async () => {
+    // setDoneProfile(!doneProfile);
     if (name === currentUser.displayName && !newPhoto) {
       setDoneProfile(!doneProfile);
     }
@@ -87,6 +88,8 @@ function ProfileEdit({ setDoneProfile, doneProfile }) {
         }
       
     } catch (error) {
+      
+      setDoneProfile(!doneProfile);
       console.error("Error updating profile", error);
     }
   };

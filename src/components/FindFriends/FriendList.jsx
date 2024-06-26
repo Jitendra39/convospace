@@ -18,7 +18,7 @@ function FriendList() {
   const handleSelect = (userInfo) => {
      
    temporaryResult("")
-   console.log("userInfo.uid =",userInfo)
+
     // navigate(`/Profile/${userInfo}`,{ state: { userInfo } });
     navigate(`/Profile/${userInfo}`);
   };
