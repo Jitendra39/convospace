@@ -12,10 +12,14 @@ import {
   setPersistence,
 } from "firebase/auth";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
- 
+  apiKey: "AIzaSyDWNubtOLkM-oYGA6MvW2_XQ6wgtr0O32Q",
+  authDomain: "chat-app-f5d74.firebaseapp.com",
+  projectId: "chat-app-f5d74",
+  storageBucket: "chat-app-f5d74.appspot.com",
+  messagingSenderId: "659244704628",
+  appId: "1:659244704628:web:12e3725092f5b7def50221",
+  measurementId: "G-DZGHV5WZVW",
 };
 
 // Initialize Firebase
@@ -35,7 +39,20 @@ const initializeAuth = async () => {
   await setPersistence(auth, browserLocalPersistence);
 };
 
- 
+// export const messaging = getMessaging(app)
+// export const generateToken = async () =>{
+//   const permission = await Notification.requestPermission();
+//   console.log(permission)
+//  if(permission === "granted")
+//   {
+//     const token = await getToken(messaging, {
+//       vapidKey: "BLgPbm1Fo8Pav5slySA-WEWK5i7U6DVvBORAwwOzq_7qMbkoNpqxXJsbQao0TIGJmjYjRMbyo_HSETaSOMPsPXY"
+//     })
+//     console.log(token)
+//   }
+
+
+// }
 
 
 

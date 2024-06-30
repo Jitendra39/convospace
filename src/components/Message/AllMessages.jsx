@@ -1,9 +1,9 @@
-import { arrayRemove, doc, getDoc, updateDoc } from 'firebase/firestore';
-import React, { useEffect, useRef, useState } from 'react';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import { db } from '../../store/firebaseConfig';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from '../../styles/AllMessage.module.css';
+import { arrayRemove, doc, getDoc, updateDoc } from "firebase/firestore";
+import React, { useEffect, useRef, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { db } from "../../store/firebaseConfig";
+import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "../../styles/AllMessage.module.css";
 
 function AllMessages({ message, currentUser, data }) {
   const lastMessageRef = useRef(null);
@@ -20,7 +20,7 @@ function AllMessages({ message, currentUser, data }) {
 
   const handleDelete = async (message, currentUser) => {
     if (message.senderId === currentUser.uid) {
-      const chatDocRef = doc(db, 'chats', data.chatId);
+      const chatDocRef = doc(db, "chats", data.chatId);
 
       try {
         const chatDocSnap = await getDoc(chatDocRef);
@@ -38,71 +38,89 @@ function AllMessages({ message, currentUser, data }) {
           }
         }
       } catch (err) {
-        console.error('Error deleting message:', err);
+        console.error("Error deleting message:", err);
       }
     }
   };
 
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [message]);
 
   return (
     <>
       {message.senderId === currentUser.uid ? (
-        <li className={`${styles['conversation-item']} ${styles.me}`} ref={lastMessageRef}>
-          <div className={styles['conversation-item-side']}>
+        <li
+          className={`${styles["conversation-item"]} ${styles.me}`}
+          ref={lastMessageRef}
+        >
+          <div className={styles["conversation-item-side"]}>
             <img
-              className={styles['conversation-item-image']}
+              className={styles["conversation-item-image"]}
               src={
-                message.senderId === currentUser.uid ? currentUser.photoURL : data.user.photoURL
+                message.senderId === currentUser.uid
+                  ? currentUser.photoURL
+                  : data.user.photoURL
               }
               alt=""
             />
           </div>
-          <div className={styles['conversation-item-content']}>
-            <div className={styles['conversation-item-wrapper']}>
-              <div className={styles['conversation-item-box']}>
-                <div className={styles['conversation-item-text']}>
+          <div className={styles["conversation-item-content"]}>
+            <div className={styles["conversation-item-wrapper"]}>
+              <div className={styles["conversation-item-box"]}>
+                <div className={styles["conversation-item-text"]}>
                   <strong>{message.senderName} </strong>
-                  <div className={styles['conversation-text-image']}>
+                  <div className={styles["conversation-text-image"]}>
                     <div>
-                      {message.img && message.type === 'image' ? (
+                      {message.img && message.type === "image" ? (
                         <img
                           src={message.img}
                           alt=""
-                          className={`${styles['messageImg']} ${imgClicked ? styles['clickedImg'] : ''}`}
+                          className={`${styles["messageImg"]} ${
+                            imgClicked ? styles["clickedImg"] : ""
+                          }`}
                           onClick={toggleImageSize}
                         />
                       ) : (
-                        message.type === 'video' && (
-                          <video className={styles['Card-Image']} autoPlay muted controls  >
+                        message.type === "video" && (
+                          <video
+                            className={styles["Card-Image"]}
+                            autoPlay
+                            muted
+                            controls
+                          >
                             <source src={message.img} type="video/mp4" />
                           </video>
                         )
                       )}
                     </div>
-                    <div className={styles['messageText']}>{message.text}</div>
+                    <div className={styles["messageText"]}>{message.text}</div>
                     <div
                       className={
-                        message.img ? styles['conversation-item-time-img'] : styles['conversation-item-time']
+                        message.img
+                          ? styles["conversation-item-time-img"]
+                          : styles["conversation-item-time"]
                       }
                     >
                       {message.time && message.time}
                     </div>
                   </div>
                 </div>
-                <div className={`${styles['conversation-item-dropdown']} ${dropdownVisible ? styles['active'] : ''}`}>
+                <div
+                  className={`${styles["conversation-item-dropdown"]} ${
+                    dropdownVisible ? styles["active"] : ""
+                  }`}
+                >
                   <button
                     type="button"
-                    className={styles['conversation-item-dropdown-toggle']}
+                    className={styles["conversation-item-dropdown-toggle"]}
                     onClick={toggleDropdown}
                   >
                     <BsThreeDotsVertical className="ri-more-2-line" />
                   </button>
-                  <ul className={styles['conversation-item-dropdown-list']}>
+                  <ul className={styles["conversation-item-dropdown-list"]}>
                     <li>
                       <a href="#">
                         <i className="ri-share-forward-line"></i> Forward
@@ -120,32 +138,32 @@ function AllMessages({ message, currentUser, data }) {
           </div>
         </li>
       ) : (
-        <li className={styles['conversation-item']} ref={lastMessageRef}>
-          <div className={styles['conversation-item-side']}>
+        <li className={styles["conversation-item"]} ref={lastMessageRef}>
+          <div className={styles["conversation-item-side"]}>
             <img
-              className={styles['conversation-item-image']}
+              className={styles["conversation-item-image"]}
               src={
-                message.senderId === currentUser.uid ? currentUser.photoURL : data.user.photoURL
+                message.senderId === currentUser.uid
+                  ? currentUser.photoURL
+                  : data.user.photoURL
               }
               alt=""
             />
           </div>
-          <div className={styles['conversation-item-content-receiver']}>
-            <div className={styles['conversation-item-wrapper']}>
-              <div className={styles['conversation-item-box']}>
-                <div className={styles['conversation-item-text-receiver']}>
+          <div className={styles["conversation-item-content-receiver"]}>
+            <div className={styles["conversation-item-wrapper"]}>
+              <div className={styles["conversation-item-box"]}>
+                <div className={styles["conversation-item-text-receiver"]}>
                   <div>
-                    {console.log(message.img, message.type)}
-                    {/* <strong>{message.senderName} </strong> */}
-                    {message.img && message.type === 'image' ? (
+                    {message.img && message.type === "image" ? (
                       <img
                         src={message.img}
                         alt=""
-                        className={`${styles['messageImg']}`}
+                        className={`${styles["messageImg"]}`}
                         onClick={toggleImageSize}
                       />
                     ) : (
-                      message.type === 'video' && (
+                      message.type === "video" && (
                         <video width="300" height="200" controls>
                           <source src={message.img} type="video/mp4" />
                         </video>
@@ -156,8 +174,8 @@ function AllMessages({ message, currentUser, data }) {
                   <div
                     className={
                       message.img
-                        ? styles['conversation-item-time-receiver-img']
-                        : styles['conversation-item-time-receiver']
+                        ? styles["conversation-item-time-receiver-img"]
+                        : styles["conversation-item-time-receiver"]
                     }
                   >
                     {message.time && message.time}

@@ -3,20 +3,13 @@ import "../../index.css";
 import ConversationHeader from "../ConversationHeader";
 
 import { RiMicLine } from "react-icons/ri";
-import { FaRegFaceSmileWink } from "react-icons/fa6";
 import { BiMessageRoundedError, BiSend } from "react-icons/bi";
 import waveformGif from "../../assets/waveform-10016798-8157897.gif";
 import {
   Timestamp,
   arrayUnion,
-  collection,
   doc,
-  limit,
-  limitToLast,
-  orderBy,
   query,
-  serverTimestamp,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
@@ -33,12 +26,8 @@ import { ChatContext } from "../../store/ChatContext";
 import { onSnapshot } from "firebase/firestore";
 import { db } from "../../store/firebaseConfig";
 
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-
 import ShareIcon from "@mui/icons-material/Share";
 import CircularWithValueLabel from "./ProgressBar";
-import SendedMessages from "./AllMessages";
 import AllMessages from "./AllMessages";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import Notification from "./Notification";
@@ -46,11 +35,12 @@ import NetworkConnection from "../NetworkConnection";
 import Tooltip from "./Tooltip";
 import VideoFileIcon from "@mui/icons-material/VideoFile";
 import PreviewMessages from "./PreviewMessages";
-import EmojiPicker from "./EmojiPicker";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import { useNavigate } from "react-router-dom";
 
 const actions = [
   { icon: <VideoFileIcon />, name: "Video" },
-  { icon: <SaveIcon />, name: "Save" },
+  { icon: <SportsEsportsIcon />, name: "Game" },
   { icon: <PhotoLibraryIcon />, name: "Gallery" },
   { icon: <ShareIcon />, name: "Share" },
 ];
@@ -67,15 +57,15 @@ function DirectMessage() {
   const [micSVG, setMicSVG] = useState(true);
   const [progressBar, setProgressBar] = useState(false);
   const [progress, setProgress] = useState(0);
-
-  const { currentUser } = useContext(SocialMediaContext);
+  const [playGame, setPlayGame] = useState("");
+  const { currentUser, handleGameRequest, gameCheck, handleDeleteGameRequest } =
+    useContext(SocialMediaContext);
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
-  // const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [messages, setMessages] = useState([]);
   const { data } = useContext(ChatContext);
   const [emoji, setEmoji] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setShowConversation(false);
 
@@ -96,7 +86,6 @@ function DirectMessage() {
   }, [data.chatId]);
 
   const handleSend = async () => {
- 
     if (!data.chatId) {
       return;
     }
@@ -113,7 +102,6 @@ function DirectMessage() {
             setProgress(
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100
             );
- 
           },
 
           (error) => {
@@ -122,7 +110,7 @@ function DirectMessage() {
           },
           async () => {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            
+
             const chatId = data.chatId;
 
             try {
@@ -171,39 +159,9 @@ function DirectMessage() {
                 date: Timestamp.now(),
               }),
             });
- 
-            // await updateDoc(doc(db, "userChats", data.user.uid), {
-            //   [data.chatId + ".lastMessage"]: {
-            //     text,
-            //   },
-            //   [data.chatId + ".userInfo"]: {
-            //     displayName: currentUser.displayName,
-            //     photoURL: currentUser.photoURL,
-            //     uid: currentUser.uid,
-            //   },
-            //   [data.chatId + ".date"]: serverTimestamp(),
-            // });
 
             setText("");
           }
-          //} else {
-          //   await updateDoc(doc(db, "chats", chatId), {
-          //     messages: arrayUnion({
-          //       id: uuid(),
-          //       text: text || "",
-          //       time: new Date().toLocaleTimeString([], {
-          //         hour: "2-digit",
-          //         minute: "2-digit",
-          //       }),
-          //       senderId: currentUser.uid,
-          //       date: Timestamp.now(),
-          //       img: emoji,
-          //       type: "image",
-          //     }),
-          //   });
-          //   setText("");
-          //   setEmoji(null);
-          // }
         } catch (error) {
           console.error("Error updating chat:", error);
         }
@@ -259,9 +217,50 @@ function DirectMessage() {
     recognization.start();
   };
 
+  //----------------------------------------------------------------------------------------------------------------------------------------------------------------------Game Handler ----------------- -------------------------------------------------------------//
+  const handleGameState = () => {
+    handleGameRequest(data);
+  };
+
+  useEffect(() => {
+    if (!data.user.uid) return;
+    const fetchGameData = async () => {
+      try {
+        const gameData = await gameCheck(data.user);
+        const gameData2 = await gameCheck(currentUser);
+
+        if (gameData) {
+          {
+            gameData[data.user.uid]
+              ? setPlayGame(gameData[data.user.uid])
+              : setPlayGame(gameData[currentUser.uid]);
+          }
+        } else {
+          {
+            !gameData2[currentUser.uid]
+              ? setPlayGame(gameData2[data.user.uid])
+              : setPlayGame(gameData2[currentUser.uid]);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching game data:", error);
+      }
+    };
+
+    fetchGameData();
+  }, [data.user.uid, currentUser.uid]);
+
+  async function deletePlayGameIcon() {
+    let del = handleDeleteGameRequest(playGame.p1Uid, playGame.p2Uid);
+    if(del) setPlayGame(!playGame);
+  }
+
+  function handlePlayGame() {
+    navigate("/Games", { state: { playerDetails: playGame } });
+  }
+
   return (
     <>
- 
       {data.chatId === "null" && (
         <div className="conversation conversation-default active">
           <BiMessageRoundedError className="text-6xl" />
@@ -285,15 +284,6 @@ function DirectMessage() {
                   />
                 ))}
             </ul>
-            {/* {emoji && !showEmojiPicker && (
-              <PreviewMessages emoji={emoji} setEmoji={setEmoji} />
-            )}
-            {showEmojiPicker && (
-              <EmojiPicker
-                setEmoji={setEmoji}
-                setShowEmojiPicker={setShowEmojiPicker}
-              />
-            )} */}
 
             {notify && (
               <Notification
@@ -304,7 +294,12 @@ function DirectMessage() {
               />
             )}
           </div>
-
+          {playGame && (
+            <PreviewMessages
+              deletePlayGameIcon={deletePlayGameIcon}
+              handlePlayGame={handlePlayGame}
+            />
+          )}
           <div class="conversation-form">
             <div className="conversation-form-box">
               {progressBar && <CircularWithValueLabel props={progress} />}
@@ -319,6 +314,7 @@ function DirectMessage() {
                   handleClose={handleClose}
                   handleOpen={handleOpen}
                   actions={actions}
+                  handleGameState={handleGameState}
                 />
               )}
             </div>
@@ -342,16 +338,6 @@ function DirectMessage() {
                   <img src={waveformGif} alt="mic" className="waveFormGif" />
                 )}
               </button>
-
-              {/* <button
-                type="button"
-                class="conversation-form-record-2"
-                onClick={() => {
-                  setShowEmojiPicker(!showEmojiPicker);
-                }}
-              >
-                <FaRegFaceSmileWink class="ri-emotion-line" />
-              </button> */}
             </div>
             <button
               type="button"

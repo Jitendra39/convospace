@@ -20,7 +20,7 @@ import { db, realTimeDataBase } from "../../store/firebaseConfig";
 import UserPost from "./UserPostCard";
 import AlertDialog from "../General/AlertDialog";
 import { set, ref, get, child, remove } from "firebase/database";
-import { ChatContext } from "../../store/ChatContext";
+ 
 
 function Profile() {
   // const location = useLocation();
@@ -35,11 +35,11 @@ function Profile() {
   const [deletePost, setDeletePost] = useState(null);
 
   const [currentUser1, setCurrentUser] = useState("");
-  const { currentUser} = useContext(SocialMediaContext);
+  const { currentUser,successAlert } = useContext(SocialMediaContext);
   const [userPosts, setUserPosts] = useState([]);
   const [postClicked, setPostClicked] = useState();
   const postClickedRef = useRef(null);
-  const {UnfollowRequest} = useContext(ChatContext)
+  // const {UnfollowRequest} = useContext(ChatContext)
   async function userData(id) {
     if (!currentUser.uid || currentUser.uid !== id) {
       const user = await getDoc(doc(db, "users", id));
@@ -74,7 +74,6 @@ function Profile() {
     }
   };
 
-
   const handleClickOutSide = (event) => {
     if (
       postClickedRef.current &&
@@ -96,21 +95,17 @@ function Profile() {
     };
   }, [postClicked]);
 
-
-
   const handleDeletePost = async () => {
-
-console.log(deletePost.id)
+    console.log(deletePost.id);
     if (!currentUser.uid || currentUser.uid !== id) return;
- 
+
     try {
-       
       const docRef = doc(db, "PostData", deletePost.id);
       const docRef2 = doc(db, "user-posts", currentUser.uid);
 
-     await deleteDoc(docRef);
+      await deleteDoc(docRef);
 
-     await updateDoc(docRef2, {
+      await updateDoc(docRef2, {
         posts: arrayRemove(deletePost),
       });
 
@@ -118,15 +113,15 @@ console.log(deletePost.id)
       setPostClicked(null);
       getData();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
   const writeUserData = () => {
     // if(requestStatus === "Friends") navigate(`/User/${currentUser.displayName}/FriendsLobby`);
-   
+
     if (id === currentUser.uid || requestStatus !== "Add Friend") return;
-    
+
     const dataRef = ref(
       realTimeDataBase,
       `notification/${id}/${currentUser.uid}`
@@ -143,8 +138,6 @@ console.log(deletePost.id)
         console.log(err);
       });
   };
-
-
 
   async function fetchData() {
     const dbRef = ref(realTimeDataBase);
@@ -165,7 +158,7 @@ console.log(deletePost.id)
           const data1 = Object.entries(data).filter(
             ([id, chat]) => chat && chat.date
           );
-        
+
           const data2 = data1.find(([key, chat]) => chat.userInfo.uid === id);
           if (data2) {
             setRequestStatus("UnFriend");
@@ -179,21 +172,15 @@ console.log(deletePost.id)
     }
   }
 
- 
-
   useEffect(() => {
-  
     fetchData();
     userData(id);
     getData();
-   
   }, [id]);
 
-  
-
-  const handleClickCopy = async() =>{
+  const handleClickCopy = async () => {
     await navigator.clipboard.writeText(id);
-  }
+  };
 
   return (
     <>
@@ -225,10 +212,13 @@ console.log(deletePost.id)
                   </div>
                   <div className="media-body mb-5 text-white profile-name">
                     <h4 className="mt-0 mb-0">{currentUser1.displayName}</h4>
-                    <p className="small mb-4 profile-locaton" onClick={handleClickCopy}>
-                    {id}
+                    <p
+                      className="small mb-4 profile-locaton"
+                      onClick={handleClickCopy}
+                    >
+                      {id}
                       <FaCopy className="profile-location-icon" />
-                                    </p>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -256,15 +246,19 @@ console.log(deletePost.id)
                 <div class="container">
                   <div class="btn" onClick={writeUserData}>
                     <a>
-                 
-                     {/* {requestStatus} */}
+                      {/* {requestStatus} */}
                       {currentUser.uid === id ? "Friends" : `${requestStatus}`}
                     </a>
                   </div>
-                  <div class="btn" onClick={() => navigate(`/User/${currentUser.displayName}/FriendsLobby`)}>
+                  <div
+                    class="btn"
+                    onClick={() =>
+                      navigate(`/User/${currentUser.displayName}/FriendsLobby`)
+                    }
+                  >
                     <a>Message</a>
                   </div>
-                  <div class="btn">
+                  <div class="btn" >
                     <a>Share</a>
                   </div>
                 </div>
@@ -331,7 +325,11 @@ console.log(deletePost.id)
           )}
 
           {deletePost && (
-            <AlertDialog work={handleDeletePost} load={setDeletePost} message={deletePost.message}/>
+            <AlertDialog
+              work={handleDeletePost}
+              load={setDeletePost}
+              message={deletePost.message}
+            />
           )}
         </div>
       ) : (

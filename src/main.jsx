@@ -19,6 +19,7 @@ import { HomePageContextProvider } from "./store/HomePageContext.jsx";
 import User from "./components/User.jsx";
 import FindFriends from "./components/FindFriends/FindFriends.jsx";
 import NotificationTab from "./components/NotificationTab/NotificationTab.jsx";
+import TicTacToe from "./components/Games/Tic_Tac_Toe/TicTacToe.jsx";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -32,6 +33,7 @@ root.render(
           
               <Route path="/" element={<Home />} />
               <Route path="/Login" element={<Login />} />
+              <Route path="/Games" element={<TicTacToe />} />
               <Route path="/SignUp" element={<Auth />} />
               <Route path="/User/:id" element={<User />}>
                 <Route path="FriendsLobby" element={<DirectConversation/>} />

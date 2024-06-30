@@ -63,7 +63,7 @@ function ProfileEdit({ setDoneProfile, doneProfile }) {
 
         const downloadURL = await getDownloadURL(uploadTaskSnapshot.ref);
         "downloadURL =", downloadURL;
-  
+
         if (user) {
           updateProfile(user, {
             displayName: name,
@@ -76,19 +76,17 @@ function ProfileEdit({ setDoneProfile, doneProfile }) {
           setDoneProfile(!doneProfile);
         }
       } else if (user) {
-         updateProfile(user, {
-            displayName: name,
-          });
+        updateProfile(user, {
+          displayName: name,
+        });
 
-          await updateDoc(doc(db, "users", user.uid), {
-            displayName: name,
-          });
+        await updateDoc(doc(db, "users", user.uid), {
+          displayName: name,
+        });
 
-          setDoneProfile(!doneProfile);
-        }
-      
+        setDoneProfile(!doneProfile);
+      }
     } catch (error) {
-      
       setDoneProfile(!doneProfile);
       console.error("Error updating profile", error);
     }

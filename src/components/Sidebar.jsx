@@ -19,9 +19,9 @@ const cookies = new Cookies();
 
 function Sidebar() {
   const [createPost, setCreatepost] = useState(false);
-  const { isLessThan768, currentUser, isLessThan999,fetchData } =
+  const { isLessThan768, currentUser, isLessThan999, fetchData } =
     useContext(SocialMediaContext);
-  const [notificationCount, setNotificationCount] = useState('')
+  const [notificationCount, setNotificationCount] = useState("");
   const [notificationTab, setNotificationTab] = useState(false);
   const navigate = useNavigate();
   const [profileActive, setProfileActive] = useState(false);
@@ -59,14 +59,13 @@ function Sidebar() {
   if (!currentUser) {
     return null;
   }
-useEffect(() =>{
-    const fetchNotificationCount = async() => {
-            const count = await fetchData(currentUser);
-           if(count)  setNotificationCount(count.length);           
-    }
+  useEffect(() => {
+    const fetchNotificationCount = async () => {
+      const count = await fetchData(currentUser);
+      if (count) setNotificationCount(count.length);
+    };
     fetchNotificationCount();
-},[])
-  
+  }, []);
 
   return (
     <>
@@ -76,7 +75,10 @@ useEffect(() =>{
         </div>
         <div className="create-post-component2">
           {notificationTab && (
-            <NotificationTab setNotificationTab={setNotificationTab} notificationTab={notificationTab}/>
+            <NotificationTab
+              setNotificationTab={setNotificationTab}
+              notificationTab={notificationTab}
+            />
           )}
         </div>
         <a href="#" className="chat-sidebar-logo">
@@ -98,7 +100,7 @@ useEffect(() =>{
             </NavLink>
           </li>
 
-          <li>                                             
+          <li>
             {isLessThan768 ? (
               <NavLink
                 to={`/User/${currentUser.displayName}/Create Post`}
@@ -118,7 +120,7 @@ useEffect(() =>{
               </NavLink>
             )}
           </li>
-          <li onClick={() => setNotificationTab(!notificationTab)} >
+          <li onClick={() => setNotificationTab(!notificationTab)}>
             <NavLink
               to={
                 isLessThan768
@@ -128,8 +130,11 @@ useEffect(() =>{
               activeclassname="active"
               data-title="Available Soon...."
             >
-              <Badge color="secondary" badgeContent={notificationCount ?notificationCount : 0}>
-                <MailIcon sx={{marginBottom: '20px'}}/>
+              <Badge
+                color="secondary"
+                badgeContent={notificationCount ? notificationCount : 0}
+              >
+                <MailIcon sx={{ marginBottom: "20px" }} />
               </Badge>
             </NavLink>
           </li>

@@ -7,11 +7,11 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import { SocialMediaContext } from "../store/GeneralStore";
 import AlertDialog from "./General/AlertDialog";
- function ConversationHeader({ setShowConversation }) {
+function ConversationHeader({ setShowConversation }) {
   const navigate = useNavigate();
   const { data, UnfollowRequest } = useContext(ChatContext);
   const { currentUser } = useContext(SocialMediaContext);
-  const [alert, setAlert] = useState('');
+  const [alert, setAlert] = useState("");
   useEffect(() => {
     {
       "data=", data.user;
@@ -19,13 +19,15 @@ import AlertDialog from "./General/AlertDialog";
   }, [data]);
 
   const handleDelete = async () => {
-   setAlert('')
-   UnfollowRequest(data.user.uid)
+    setAlert("");
+    UnfollowRequest(data.user.uid);
   };
 
   return (
     <>
-   {alert && <AlertDialog work={handleDelete} load={setAlert} message={alert}/>}
+      {alert && (
+        <AlertDialog work={handleDelete} load={setAlert} message={alert} />
+      )}
       <div class="conversation-top">
         <button
           type="button"
@@ -57,7 +59,11 @@ import AlertDialog from "./General/AlertDialog";
           <button type="button">
             <MdDeleteForever
               className="conversation-buttons-name"
-              onClick={() =>setAlert("Are you sure you want to unfriend this person? This action will also delete all messages.")}
+              onClick={() =>
+                setAlert(
+                  "Are you sure you want to unfriend this person? This action will also delete all messages."
+                )
+              }
             />
           </button>
         </div>

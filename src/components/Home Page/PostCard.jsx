@@ -34,15 +34,14 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { currentUser } = React.useContext(SocialMediaContext);
   const [thumbDown, setThumbDown] = React.useState({});
   const [favorite, setFavorite] = React.useState({});
   const [likes, setLikes] = React.useState({});
   const [dislikes, setDislikes] = React.useState({});
 
-
-  const {postsdata} = React.useContext(homePageContext);
+  const { postsdata } = React.useContext(homePageContext);
   React.useEffect(() => {
     const initialLikes = {};
     const initialFavorite = {};
@@ -67,7 +66,6 @@ export default function PostCard() {
   }, [postsdata.posts]);
 
   const handleUpdateLike = async (postId, incrementBy) => {
-
     const postRef = doc(db, "PostData", postId);
     const updateData = {
       likes: likes[postId] + incrementBy,
@@ -79,7 +77,7 @@ export default function PostCard() {
       updateData.userLikes = arrayRemove(currentUser.uid);
     }
 
-     updateDoc(postRef, updateData);
+    updateDoc(postRef, updateData);
 
     setLikes((prevLikes) => ({
       ...prevLikes,
@@ -99,7 +97,7 @@ export default function PostCard() {
       updateData.userDislikes = arrayRemove(currentUser.uid);
     }
 
-     updateDoc(postRef, updateData);
+    updateDoc(postRef, updateData);
 
     setThumbDown((prevThumbDown) => ({
       ...prevThumbDown,
@@ -157,98 +155,101 @@ export default function PostCard() {
     return format(date, "MMMM d, yyyy");
   };
 
-  const handleClickProfile = (id) =>{
+  const handleClickProfile = (id) => {
     navigate(`/Profile/${id}`);
-  }
+  };
 
   return (
     <div className="PostCard">
-
-      {postsdata && postsdata.posts.map((post) => (
-        
-        <div className="post-card-item" key={post.id}>
-          
-          <Card sx={{ maxWidth: 570 }}>
-            <CardHeader 
-                  onClick={() => handleClickProfile(post.uid)} 
-              avatar={
-                <Avatar alt="avatar" src={post.photoURL} aria-label="recipe" />
-              }
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              title={post.displayName}
-              subheader={post.serverTimestamp && dateTime(post.serverTimestamp)}
-            />
-            {post.type && post.type.includes("image") ? (
-              <CardMedia
-                component="img"
-                className="Card-Image"
-                image={post.file}
-                alt="Post image"
+      {postsdata &&
+        postsdata.posts.map((post) => (
+          <div className="post-card-item" key={post.id}>
+            <Card sx={{ maxWidth: 570 }}>
+              <CardHeader
+                onClick={() => handleClickProfile(post.uid)}
+                avatar={
+                  <Avatar
+                    alt="avatar"
+                    src={post.photoURL}
+                    aria-label="recipe"
+                  />
+                }
+                action={
+                  <IconButton aria-label="settings">
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+                title={post.displayName}
+                subheader={
+                  post.serverTimestamp && dateTime(post.serverTimestamp)
+                }
               />
-            ) : (
-              <video className="Card-Image" autoPlay muted controls>
-                <source src={post.file} type="video/mp4" />
-              </video>
-            )}
+              {post.type && post.type.includes("image") ? (
+                <CardMedia
+                  component="img"
+                  className="Card-Image"
+                  image={post.file}
+                  alt="Post image"
+                />
+              ) : (
+                <video className="Card-Image" autoPlay muted controls>
+                  <source src={post.file} type="video/mp4" />
+                </video>
+              )}
 
- 
-            <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                {post.description}
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <div className="favoriteIcon">
-                <IconButton
-                  aria-label="add to favorites"
-                  style={{ paddingBottom: "0" }}
-                  onClick={() => {
-                    toggleFavorite(post.id);
-                  }}
-                >
-                  {favorite[post.id] ? (
-                    <FavoriteIcon
-                      style={{ fontSize: "2.1rem", paddingBottom: "0" }}
-                    />
-                  ) : (
-                    <MdFavoriteBorder
-                      style={{ fontSize: "2rem", paddingBottom: "0" }}
-                    />
-                  )}
-                </IconButton>
-                <div className="favoriteIcon-count">{likes[post.id]}</div>
-              </div>
-              <div className="favoriteIcon">
-                <IconButton
-                  aria-label="thumb down"
-                  style={{ paddingBottom: "0" }}
-                  onClick={() => {
-                    toggleDislike(post.id);
-                  }}
-                >
-                  {dislikes[post.id] ? (
-                    <ThumbDownIcon
-                      style={{ fontSize: "2.1rem", paddingBottom: "0" }}
-                    />
-                  ) : (
-                    <ThumbDownOffAltIcon
-                      style={{ fontSize: "2rem", paddingBottom: "0" }}
-                    />
-                  )}
-                </IconButton>
-                <div className="favoriteIcon-count">{thumbDown[post.id]}</div>
-              </div>
-              <ExpandMore>
-                <ShareIcon />
-              </ExpandMore>
-            </CardActions>
-          </Card>
-        </div>
-      ))}
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {post.description}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <div className="favoriteIcon">
+                  <IconButton
+                    aria-label="add to favorites"
+                    style={{ paddingBottom: "0" }}
+                    onClick={() => {
+                      toggleFavorite(post.id);
+                    }}
+                  >
+                    {favorite[post.id] ? (
+                      <FavoriteIcon
+                        style={{ fontSize: "2.1rem", paddingBottom: "0" }}
+                      />
+                    ) : (
+                      <MdFavoriteBorder
+                        style={{ fontSize: "2rem", paddingBottom: "0" }}
+                      />
+                    )}
+                  </IconButton>
+                  <div className="favoriteIcon-count">{likes[post.id]}</div>
+                </div>
+                <div className="favoriteIcon">
+                  <IconButton
+                    aria-label="thumb down"
+                    style={{ paddingBottom: "0" }}
+                    onClick={() => {
+                      toggleDislike(post.id);
+                    }}
+                  >
+                    {dislikes[post.id] ? (
+                      <ThumbDownIcon
+                        style={{ fontSize: "2.1rem", paddingBottom: "0" }}
+                      />
+                    ) : (
+                      <ThumbDownOffAltIcon
+                        style={{ fontSize: "2rem", paddingBottom: "0" }}
+                      />
+                    )}
+                  </IconButton>
+                  <div className="favoriteIcon-count">{thumbDown[post.id]}</div>
+                </div>
+                <ExpandMore>
+                  <ShareIcon />
+                </ExpandMore>
+              </CardActions>
+            </Card>
+          </div>
+        ))}
     </div>
   );
 }

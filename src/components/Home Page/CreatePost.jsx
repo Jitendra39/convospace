@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import Sidebar from "../Sidebar";
 import { v4 as uuid } from "uuid";
 import {
- 
   doc,
   getDoc,
   serverTimestamp,
@@ -36,7 +35,7 @@ function CreatePost({ setCreatepost }) {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-   
+
     if (file && file.type.includes("image")) {
       setPostFile(file);
       const reader = new FileReader();
@@ -68,7 +67,7 @@ function CreatePost({ setCreatepost }) {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-         
+
           dispatch({
             type: "PROGRESS",
             payload: {
@@ -87,11 +86,10 @@ function CreatePost({ setCreatepost }) {
         },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-         
 
           const randomId = uuid();
 
-           setDoc(doc(db, "PostData", randomId), {
+          setDoc(doc(db, "PostData", randomId), {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
@@ -106,7 +104,7 @@ function CreatePost({ setCreatepost }) {
           });
 
           if (!res.exists()) {
-             setDoc(doc(db, "user-posts", currentUser.uid), {
+            setDoc(doc(db, "user-posts", currentUser.uid), {
               posts: [randomId],
             });
           } else {
@@ -116,14 +114,16 @@ function CreatePost({ setCreatepost }) {
           }
 
           ///dispatching notification
-      {downloadURL && 
-        dispatch({
-          type: "NOTIFY",
-          payload: {
-            notify: "Post Created Successfully",
-            notificationType: "success",
-          },
-        });}
+          {
+            downloadURL &&
+              dispatch({
+                type: "NOTIFY",
+                payload: {
+                  notify: "Post Created Successfully",
+                  notificationType: "success",
+                },
+              });
+          }
         }
       );
     } catch (err) {
@@ -147,7 +147,6 @@ function CreatePost({ setCreatepost }) {
 
   return (
     <>
- 
       <div className="sideBar-Visible">
         <Sidebar />
       </div>
@@ -188,7 +187,12 @@ function CreatePost({ setCreatepost }) {
             </>
           ) : (
             <div className="input-file-box-preview" onClick={handleInputClick}>
-              <CancelIcon className="photo-video-cancel"  onClick={() => {setPostFile(null), setTempPost(null)}}/>
+              <CancelIcon
+                className="photo-video-cancel"
+                onClick={() => {
+                  setPostFile(null), setTempPost(null);
+                }}
+              />
               {tempPost.includes("image") ? (
                 <img src={tempPost} alt="post" />
               ) : (

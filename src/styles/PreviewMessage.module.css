@@ -31,3 +31,7 @@
 .CloseIcon :hover{
   color: rgb(255, 0, 0);
 }
+
+.playgameIcon{
+  font-size: 5rem;
+}

@@ -6,7 +6,8 @@ import React, {
   useRef,
 } from "react";
 import { auth, realTimeDataBase } from "./firebaseConfig";
-import { get, ref } from "firebase/database";
+import { child, get, onValue, ref, remove, set } from "firebase/database";
+import Swal from "sweetalert2";
 
 export const SocialMediaContext = createContext();
 
@@ -94,16 +95,88 @@ export const SocialMediaContextProvider = ({ children }) => {
     }
   };
 
+  //--------------------   Game Start Logic ---------------------//
+  const handleGameRequest = (oppData) => {
+    const dataRef = ref(
+      realTimeDataBase,
+      `GameRequest/${oppData.user.uid}/${currentUser.uid}`
+    );
+
+    set(dataRef, {
+      p1Uid: currentUser.uid,
+      p1Name: currentUser.displayName,
+      p1Status: true,
+      p2Uid: oppData.user.uid,
+      p2Name: oppData.user.displayName,
+      p2Status: false,
+    })
+      .then(() => {
+      successAlert( `Play request has been sent to ${oppData.user.displayName}!  Please refresh the page to start the game.`)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const gameCheck = async (data) => {
+
+    const dbRef = ref(realTimeDataBase, `GameRequest/${data.uid}`);
+    return new Promise((resolve, reject) => {
+      onValue(
+        dbRef,
+        (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            resolve(data);
+          } else {
+            resolve(null);
+          }
+        },
+        (error) => {
+          console.error("The read failed: " + error.message);
+          reject(error);
+        }
+      );
+    });
+  };
+
+const handleDeleteGameRequest = (p1, p2) =>{
+  const dataRef = ref(
+    realTimeDataBase,
+    `GameRequest/${p2}/${p1}`
+  );
+  try {
+   remove(dataRef)
+    return "del"
+  }
+  catch(err){
+      console.log(err)
+  }
+}
+
+const successAlert = (message) =>{
+  Swal.fire({
+    position: "top-end",
+    icon: "success",
+    title: message,
+    showConfirmButton: false,
+    timer: 1800
+  });
+}
 
   return (
     <SocialMediaContext.Provider
       value={{
+        successAlert,
+        handleDeleteGameRequest,
+        handleGameRequest,
         currentUser,
         fetchData,
         isLessThan768,
         isLessThan999,
         notification: state,
         dispatch,
+        gameCheck,
       }}
     >
       {children}

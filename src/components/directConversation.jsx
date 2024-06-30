@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import Chat from "./Chat";
 import Sidebar from "./Sidebar";
 
 import "../index.css";

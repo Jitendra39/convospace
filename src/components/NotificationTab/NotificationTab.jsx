@@ -91,7 +91,6 @@ function NotificationTab({ setNotificationTab, notificationTab }) {
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
             combinedId,
-
           },
           [`${combinedId}.date`]: serverTimestamp(),
         });
@@ -107,7 +106,6 @@ function NotificationTab({ setNotificationTab, notificationTab }) {
         });
       }
       RejectRequest(user);
-     
     } catch (err) {
       console.error("Error creating chat: ", err);
     }
@@ -137,41 +135,46 @@ function NotificationTab({ setNotificationTab, notificationTab }) {
         >
           <h2>Notifications</h2>
           <div className={css.contentMessages}>
-            {allRequests && allRequests.map(([key, req]) => (
-              <ul className={css.contentMessagesList}>
-                <li className={css.contentMessagesListItem} key={key}>
-                  <a href="#" data-conversation="#conversation-1">
-                    <img
-                      className={css.contentMessageImage}
-                      src={req.photoURL}
-                      alt="not available"
-                    />
-                    <span className={css.contentMessageInfo}>
-                      <span className={css.contentMessageName1}>
-                        {req.displayName}
+            {allRequests &&
+              allRequests.map(([key, req]) => (
+                <ul className={css.contentMessagesList}>
+                  <li className={css.contentMessagesListItem} key={key}>
+                    <a href="#" data-conversation="#conversation-1">
+                      <img
+                        className={css.contentMessageImage}
+                        src={req.photoURL}
+                        alt="not available"
+                      />
+                      <span className={css.contentMessageInfo}>
+                        <span className={css.contentMessageName1}>
+                          {req.displayName}
+                        </span>
+                        <span className={css.contentMessageText}>
+                          Not available
+                        </span>
                       </span>
-                      <span className={css.contentMessageText}>
-                        Not available
-                      </span>
-                    </span>
 
-                    <span className={css.contentMessageMore}>
-                      <button type="button" class="btn btn-danger" onClick={() => RejectRequest(req)}>
-                        Reject
+                      <span className={css.contentMessageMore}>
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          onClick={() => RejectRequest(req)}
+                        >
+                          Reject
+                        </button>
+                      </span>
+
+                      <button
+                        type="button"
+                        class="btn btn-success"
+                        onClick={() => handleSelect(req)}
+                      >
+                        Accept
                       </button>
-                    </span>
-
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      onClick={() =>handleSelect(req)}
-                    >
-                      Accept
-                    </button>
-                  </a>
-                </li>
-              </ul>
-            ))}
+                    </a>
+                  </li>
+                </ul>
+              ))}
           </div>
         </div>
       </div>
