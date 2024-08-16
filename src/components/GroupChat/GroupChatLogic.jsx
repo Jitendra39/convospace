@@ -2,9 +2,9 @@ import axios from "axios";
 import { useState } from "react";
 import io from "socket.io-client";
 import Swal from "sweetalert2";
-const server = "https://groupserver-draq.onrender.com";
+const server = "http://localhost:5173";
 
-const socket = io("https://groupserver-draq.onrender.com", {
+const socket = io("http://localhost:5173", {
   transports: ["websocket", "polling"],
 });
 
