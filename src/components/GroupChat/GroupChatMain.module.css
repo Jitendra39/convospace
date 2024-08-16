@@ -1,0 +1,62 @@
+.GroupMain {
+  display: flex;
+  flex-direction: row;
+}
+.GroupList {
+  min-width: 20.5vw;
+  margin-left: 60px;
+  background-color: rgb(29, 35, 42);
+  height: 100vh;
+  max-width: 300px;
+}
+
+.GroupContent {
+  width: 100%;
+}
+.GroupHeader {
+  height: 10vh;
+  position: sticky;
+  top: 1px;
+}
+.AllGroupMessages {
+  margin-right: 10px;
+  margin-top: 10px;
+  height: 80.5vh;
+  overflow-y: auto;
+}
+
+.hide {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .GroupList {
+    margin-left: 0;
+    height: 100vh;
+    min-width: 100vw;
+  }
+  .GpConvo {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .GroupHeader {
+  }
+  .AllGroupMessages {
+    margin-top: 1px;
+    overflow-y: auto;
+  }
+
+  .GroupContent {
+    display: visible;
+  }
+  .GroupInput {
+    padding-bottom: 50px;
+    position: sticky;
+    bottom: 0px;
+  }
+  .gpSideBar {
+    height: 50px;
+  }
+}

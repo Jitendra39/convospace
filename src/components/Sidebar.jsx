@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TiHome } from "react-icons/ti";
-import { MdGroups } from "react-icons/md";
+import { RiUserSearchFill } from "react-icons/ri";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../index.css";
@@ -14,6 +14,7 @@ import { MdOutlineAddBox } from "react-icons/md";
 import { SocialMediaContext } from "../store/GeneralStore";
 import CreatePost from "./Home Page/CreatePost";
 import { Badge } from "@mui/material";
+import { HiMiniUserGroup } from "react-icons/hi2";
 import NotificationTab from "./NotificationTab/NotificationTab";
 const cookies = new Cookies();
 
@@ -86,14 +87,14 @@ function Sidebar() {
         </a>
         <ul className="chat-sidebar-menu">
           <li>
-            <NavLink to="/" activeclassname="active" data-title="Home">
+            <NavLink to="/" activeclassName="active" data-title="Home">
               <TiHome className="ri-chat-3-line" />
             </NavLink>
           </li>
           <li>
             <NavLink
               to={`/User/${currentUser.displayName}/FriendsLobby`}
-              activeclassname="active"
+              activeclassName="active"
               data-title="Friends"
             >
               <BiSolidMessageRoundedDetail className="ri-folder-line" />
@@ -104,13 +105,13 @@ function Sidebar() {
             {isLessThan768 ? (
               <NavLink
                 to={`/User/${currentUser.displayName}/Create Post`}
-                activeclassname="active"
+                activeclassName="active"
                 data-title="Create Post"
               >
                 <MdOutlineAddBox className="ri-folder-line" />
               </NavLink>
             ) : (
-              <NavLink activeclassname="active" data-title="Create Post">
+              <NavLink activeclassName="active" data-title="Create Post">
                 <MdOutlineAddBox
                   className="ri-folder-line"
                   onClick={() => {
@@ -127,14 +128,21 @@ function Sidebar() {
                   ? `/User/${currentUser.displayName}/Notification`
                   : "/"
               }
-              activeclassname="active"
-              data-title="Available Soon...."
+              activeclassName="active"
+              data-title="Requests"
             >
               <Badge
                 color="secondary"
                 badgeContent={notificationCount ? notificationCount : 0}
               >
-                <MailIcon sx={{ marginBottom: "20px" }} />
+                <MailIcon
+                  sx={
+                    isLessThan768 && {
+                      marginRight: "5px",
+                      marginBottom: "20px",
+                    }
+                  }
+                />
               </Badge>
             </NavLink>
           </li>
@@ -142,15 +150,21 @@ function Sidebar() {
             <li>
               <NavLink
                 to={`/User/${currentUser.displayName}/Friend_List`}
-                activeclassname="active"
-                data-title="Available Soon...."
+                activeclassName="active"
+                data-title="Find User..."
               >
-                <MdGroups className="ri-contacts-line" />
+                <RiUserSearchFill className="ri-contacts-line" />
               </NavLink>
             </li>
           )}
           <li>
-            <a data-title="Settings"></a>
+            <NavLink
+              to={`/User/${currentUser.displayName}/Groups`}
+              activeclassName="active"
+              data-title="Find User..."
+            >
+              <HiMiniUserGroup className="ri-contacts-line" />
+            </NavLink>
           </li>
 
           <li

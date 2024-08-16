@@ -15,7 +15,7 @@ const renderFrom = [
 const TicTacToe = () => {
   const location = useLocation();
   const { playerDetails } = location.state;
-  console.log("player data =", playerDetails);
+
   const [gameState, setGameState] = useState(renderFrom);
   const [currentPlayer, setCurrentPlayer] = useState("circle");
   const [finishedState, setFinishetState] = useState(false);
@@ -124,7 +124,7 @@ const TicTacToe = () => {
   });
 
   async function playOnlineClick() {
-    const newSocket = io("http://localhost:3000/", {
+    const newSocket = io("https://server-4-z97h.onrender.com", {
       autoConnect: true,
       transports: ["websocket"],
     });
@@ -139,7 +139,6 @@ const TicTacToe = () => {
       username = nameParts[0];
       p1Id = result.p1Uid;
       p2Id = result.p2Uid;
-
     } else if (result.p2Uid === currentUser.uid) {
       const fullName = result.p2Name;
       const nameParts = fullName.split(" ");
@@ -147,11 +146,9 @@ const TicTacToe = () => {
       p1Id = result.p1Uid;
       p2Id = result.p2Uid;
     } else {
-      console.log("null");
     }
 
     setPlayerName(username);
-
 
     newSocket?.emit("request_to_play", {
       playerName: username,

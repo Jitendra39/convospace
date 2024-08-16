@@ -13,12 +13,11 @@ import FindFriends from "../FindFriends/FindFriends";
 // import toast, { Toaster } from 'react-hot-toast';
 function Home() {
   // const {notify, notificationType} = useContext(SocialMediaContext);
-  const { notification} = useContext(SocialMediaContext);
-  const { dispatch } = useContext(homePageContext)
+  const { notification } = useContext(SocialMediaContext);
+  const { dispatch } = useContext(homePageContext);
   const [showNotification, setShowNotification] = useState(false);
-  
+
   useEffect(() => {
- 
     if (notification.notify) {
       setShowNotification(true);
       setTimeout(() => {
@@ -27,9 +26,7 @@ function Home() {
     }
   }, [notification]);
 
- 
-
-  const getData = async() => {
+  const getData = async () => {
     try {
       const valRef = collection(db, "PostData");
       const dataDb = await getDocs(valRef);
@@ -45,25 +42,21 @@ function Home() {
         const dislikesB = b.dislikes || 0;
 
         if (likesA !== likesB) {
-          return likesB - likesA;  
+          return likesB - likesA;
         } else if (timestampA !== timestampB) {
-          return timestampB - timestampA; 
+          return timestampB - timestampA;
         } else {
-          return dislikesA - dislikesB;  
+          return dislikesA - dislikesB;
         }
       });
 
-    
       dispatch({
         type: "POSTS",
         payload: {
-           posts: allData,
+          posts: allData,
         },
       });
- 
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -77,21 +70,22 @@ function Home() {
   //   toast(payload.notification.body)
   //   })
   // },[])
-  
+
   return (
     <>
-    {/* <Toaster position="top-right"/> */}
       {showNotification && (
-        <ToastNotification
-          notify={notification.notify}
-          notificationType={notification.notificationType}
-        />
+        <div>
+          <ToastNotification
+            notify={notification.notify}
+            notificationType={notification.notificationType}
+          />
+        </div>
       )}
       <div className="Home-container">
         {notification.progress && notification.progress < 100 && (
           <div className="post-progress-bar">
             <div
-              class="progress"
+              className="progress"
               role="progressbar"
               aria-label="Animated striped example"
               aria-valuenow="75"
@@ -99,7 +93,7 @@ function Home() {
               aria-valuemax="100"
             >
               <div
-                class="progress-bar progress-bar-striped progress-bar-animated"
+                className="progress-bar progress-bar-striped progress-bar-animated"
                 style={{
                   width: `${notification.progress}%`,
                   color: "lightgoldenrodyellow",
@@ -116,7 +110,7 @@ function Home() {
           </div>
           <div className="Home-content">{<PostCard />}</div>
           <div className="Recommoded-Friends">
-            <FindFriends/>
+            <FindFriends />
           </div>
         </div>
       </div>

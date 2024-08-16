@@ -4,7 +4,7 @@ import ConversationHeader from "../ConversationHeader";
 
 import { RiMicLine } from "react-icons/ri";
 import { BiMessageRoundedError, BiSend } from "react-icons/bi";
-import waveformGif from "../../assets/waveform-10016798-8157897.gif";
+
 import {
   Timestamp,
   arrayUnion,
@@ -37,6 +37,7 @@ import VideoFileIcon from "@mui/icons-material/VideoFile";
 import PreviewMessages from "./PreviewMessages";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import { useNavigate } from "react-router-dom";
+import InputMessage from "../General/InputMessage";
 
 const actions = [
   { icon: <VideoFileIcon />, name: "Video" },
@@ -162,16 +163,12 @@ function DirectMessage() {
 
             setText("");
           }
-        } catch (error) {
-          console.error("Error updating chat:", error);
-        }
+        } catch (error) {}
       }
 
       setText("");
       setImg(null);
-    } catch (error) {
-      console.error("Error in handleSend:", error);
-    }
+    } catch (error) {}
   };
 
   const handleFileInputChange = (event) => {
@@ -242,9 +239,7 @@ function DirectMessage() {
               : setPlayGame(gameData2[currentUser.uid]);
           }
         }
-      } catch (error) {
-        console.error("Error fetching game data:", error);
-      }
+      } catch (error) {}
     };
 
     fetchGameData();
@@ -252,7 +247,7 @@ function DirectMessage() {
 
   async function deletePlayGameIcon() {
     let del = handleDeleteGameRequest(playGame.p1Uid, playGame.p2Uid);
-    if(del) setPlayGame(!playGame);
+    if (del) setPlayGame(!playGame);
   }
 
   function handlePlayGame() {
@@ -269,10 +264,10 @@ function DirectMessage() {
       )}
 
       {data.chatId !== "null" && !ShowConversation && (
-        <div class="conversation active">
+        <div className="conversation active">
           <ConversationHeader setShowConversation={setShowConversation} />
 
-          <div class="conversation-main">
+          <div className="conversation-main">
             <ul className="conversation-wrapper">
               {messages &&
                 messages.map((message) => (
@@ -300,7 +295,7 @@ function DirectMessage() {
               handlePlayGame={handlePlayGame}
             />
           )}
-          <div class="conversation-form">
+          <div className="conversation-form">
             <div className="conversation-form-box">
               {progressBar && <CircularWithValueLabel props={progress} />}
               {Network && <NetworkConnection />}
@@ -318,34 +313,13 @@ function DirectMessage() {
                 />
               )}
             </div>
-            <div class="conversation-form-group">
-              <textarea
-                class="conversation-form-input"
-                rows="1"
-                placeholder="Type here..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              ></textarea>
-
-              <button
-                type="button"
-                class="conversation-form-record"
-                onClick={speechRecognition}
-              >
-                {micSVG ? (
-                  <RiMicLine class="ri-mic-line" />
-                ) : (
-                  <img src={waveformGif} alt="mic" className="waveFormGif" />
-                )}
-              </button>
-            </div>
-            <button
-              type="button"
-              class="conversation-form-button conversation-form-submit"
-              onClick={handleSend}
-            >
-              <BiSend class="ri-send-plane-2-line" />
-            </button>
+            <InputMessage
+              setText={setText}
+              speechRecognition={speechRecognition}
+              micSVG={micSVG}
+              handleSend={handleSend}
+              text={text}
+            />
           </div>
         </div>
       )}

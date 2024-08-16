@@ -19,6 +19,7 @@ export const ChatContextProvider = ({ children }) => {
   const INITIAL_STATE = {
     chatId: "null",
     user: {},
+    groupUser: {},
   };
 
   const chatReducer = (state, action) => {
@@ -30,6 +31,12 @@ export const ChatContextProvider = ({ children }) => {
           chatId: action.payload.combinedId,
           change: true,
         };
+      }
+
+      case "GROUP_USER":{
+        return{
+          groupUser: action.payload
+        }
       }
       default:
         return state;
@@ -77,10 +84,9 @@ export const ChatContextProvider = ({ children }) => {
 
       //delete from chats (all messages )
       await deleteDoc(doc(db, "chats", combinedId))
-
-      console.log("delete successful")
+ 
     } catch (err){
-      console.log(err)
+    
     }
   };
 

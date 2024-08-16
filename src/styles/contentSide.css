@@ -23,7 +23,7 @@
   justify-content: space-between;
   color: cyan;
 }
-.Chats-Delete-All{
+.Chats-Delete-All {
   font-size: 1.7rem;
   margin-left: 115px;
   margin-top: 3px;
@@ -55,29 +55,26 @@
   outline: transparent;
   border: none;
   cursor: pointer;
-  transition: color .15s ease-in-out;
+  transition: color 0.15s ease-in-out;
 }
 .content-sidebar-submit:hover {
   color: var(--slate-600);
 }
 
-
-
 .content-messages {
-  overflow-y: auto;
-  /* height: 100%; */
+  overflow-y: scroll;
+  scrollbar-width: none;
+  max-height: 80%;
   height: fit-content;
   margin-top: 16px;
   margin-left: 10px;
   margin-right: 10px;
-
 }
 .content-messages-list {
   list-style-type: none;
   padding: 8px 0;
   border-radius: 10px;
 }
-
 
 .content-messages-list > * > a {
   display: flex;
@@ -114,7 +111,7 @@
   border-radius: 5px;
 }
 .content-message-title::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -137,13 +134,22 @@
   margin-right: 12px;
   width: 100%;
   font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.content-message-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .content-message-text {
   font-size: 13px;
   color: var(--slate-400);
   text-overflow: ellipsis;
   overflow: hidden;
+  max-width: 290px;
   white-space: nowrap;
 }
 .content-message-more {
@@ -163,42 +169,48 @@
   font-weight: 500;
 }
 
-
-
-
 @media screen and (max-width: 767px) {
+  .content-messages {
+    overflow-y: scroll;
+    max-height: 75%;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .content-message-text {
+    max-width: 90vw;
+  }
   .conversation,
   .chat-content {
-      padding-left: unset;
+    padding-left: unset;
   }
   .content-sidebar {
-      left: unset;
-      z-index: 10;
-      width: 100%;
+    left: unset;
+    z-index: 10;
+    width: 100%;
   }
   .chat-sidebar-menu > * > a::before {
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 100%;
-      top: unset;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 100%;
+    top: unset;
   }
   .chat-sidebar-menu > * > a:hover::before {
-      bottom: calc(100% + 8px);
-      left: 50%;
+    bottom: calc(100% + 8px);
+    left: 50%;
   }
   .chat-content {
     position: relative;
     height: calc(100% - 48px);
-}
-.conversation.active {
+  }
+  .conversation.active {
     position: relative;
     z-index: 20;
-}
-.conversation-back {
+  }
+  .conversation-back {
     display: flex;
-}
-.conversation-default.active {
+  }
+  .conversation-default.active {
     display: none;
     padding: 16px;
-}
+  }
 }

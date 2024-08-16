@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Login from "./Login";
+import "../styles/common.css";
 import SignUp from "./SignUp";
 import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -12,6 +12,8 @@ import {
 import { SocialMediaContext } from "../store/GeneralStore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import LoadingSpinner from "./General/LoadingSpinner";
+import ToastNotification from "./Message/Notification";
 
 const cookies = new Cookies();
 
@@ -28,10 +30,10 @@ function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  // const [file, setFile] = useState("")
-  const [err, setErr] = useState(false);
+
   const handleSignUp = async (e) => {
     e.preventDefault();
+    setLoading(!loading);
 
     if (displayName) {
       "displayName", displayName;
@@ -45,10 +47,7 @@ function Auth() {
       );
 
       const date = new Date().getTime();
-      const storageRef = ref(storage, `${displayName + date}`);
 
-      // await uploadBytesResumable(storageRef, file).then(() => {
-      //   getDownloadURL(storageRef).then(async (downloadURL) => {
       try {
         //Update profile
         await updateProfile(userCredential.user, {
@@ -67,8 +66,6 @@ function Auth() {
         await setDoc(doc(db, "userChats", userCredential.user.uid), {});
         navigate("/");
       } catch (err) {
-        err;
-        setErr(true);
         setLoading(false);
       }
       //   });
@@ -81,7 +78,7 @@ function Auth() {
 
       navigate("/");
     } catch (error) {
-      console.error("Signup Error:", error);
+      setLoading(false);
     }
   };
 
@@ -101,24 +98,28 @@ function Auth() {
 
       navigate("/");
     } catch (error) {
-      console.error("Authentication Error:", error);
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      <SignUp
-        err={err}
-        loading={loading}
-        setDisplayName={setDisplayName}
-        email={email}
-        password={password}
-        setEmail={setEmail}
-        setPassword={setPassword}
-        handleSignUp={handleSignUp}
-        signInWithGoogle={signInWithGoogle}
-        // setFile={setFile}
-      />
+      {!loading ? (
+        <SignUp
+          setDisplayName={setDisplayName}
+          email={email}
+          password={password}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          handleSignUp={handleSignUp}
+          signInWithGoogle={signInWithGoogle}
+          // setFile={setFile}
+        />
+      ) : (
+        <div className="loadingSpinner">
+          <LoadingSpinner />
+        </div>
+      )}
     </div>
   );
 }

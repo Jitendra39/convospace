@@ -5,7 +5,7 @@ import "../../styles/Notification.scss";
 import { AiFillCloseCircle } from "react-icons/ai";
 import LinearProgress from "@mui/material/LinearProgress";
 
-export default function ToastNotification({notify, setNotify, notificationType, setNotificationType }) {
+export default function ToastNotification({ notify, notificationType }) {
   const [progress, setProgress] = React.useState(100);
   const [close, setClose] = React.useState(false);
 
@@ -16,15 +16,6 @@ export default function ToastNotification({notify, setNotify, notificationType, 
           clearInterval(timer);
           setTimeout(() => {
             setClose(true);
-            {
-              notify &&
-                setNotify('');
-            
-            }
-            {
-              notificationType && setNotificationType('');
-
-            }
           }, 100);
           return 0;
         }
@@ -35,25 +26,29 @@ export default function ToastNotification({notify, setNotify, notificationType, 
     return () => {
       clearInterval(timer);
     };
-  }, [setNotify, setNotificationType]);  
-
+  }, [notificationType, notify]);
 
   const handleClose = () => {
     setClose(true);
-    setTimeout(() => {
-      setNotify('');
-      setNotificationType('');
-    }, 100);
+    setTimeout(() => {}, 100);
   };
- 
+
   return (
     <>
       <div className="notification">
-      
         <div className={!close ? "notification-top" : "hide"}>
-          <div className={notificationType === "success" ? "notification-Done" : "notification-Error"}>
-          {notificationType === "success" ? <FaCircleCheck /> : <AiFillCloseCircle />}
-        
+          <div
+            className={
+              notificationType === "success"
+                ? "notification-Done"
+                : "notification-Error"
+            }
+          >
+            {notificationType === "success" ? (
+              <FaCircleCheck />
+            ) : (
+              <AiFillCloseCircle />
+            )}
           </div>
           <p>{notify}</p>
           <div className="notification-close">
@@ -66,46 +61,15 @@ export default function ToastNotification({notify, setNotify, notificationType, 
               sx={{
                 width: "290px",
                 "& .MuiLinearProgress-bar": {
-                  backgroundColor: notificationType === "success" ? "#0abf30" : "#e24d4c",
+                  backgroundColor:
+                    notificationType === "success" ? "#0abf30" : "#e24d4c",
                 },
                 backgroundColor: "transparent",
               }}
             />
           </div>
         </div>
-      {/* ) : (
-
-        <div className={!close ? "notification-top" : "hide"}>
-        <div className="notification-Error">
-  <AiFillCloseCircle />
-      
-        </div>
-        <p>Please check your internet connection and try again.</p>
-        <div className="notification-close">
-          <RxCross2 onClick={handleClose} />
-        </div>
-        <div className="notification-bottom">
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{
-              width: "290px",
-              "& .MuiLinearProgress-bar": {
-                backgroundColor:  "#e24d4c",
-              },
-              backgroundColor: "transparent",
-            }}
-          />
-        </div>
       </div>
-      )
-    }
-         */}
-      </div>
-
-
-      
     </>
   );
 }
- 

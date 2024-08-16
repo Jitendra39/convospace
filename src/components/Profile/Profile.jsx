@@ -20,7 +20,7 @@ import { db, realTimeDataBase } from "../../store/firebaseConfig";
 import UserPost from "./UserPostCard";
 import AlertDialog from "../General/AlertDialog";
 import { set, ref, get, child, remove } from "firebase/database";
- 
+import { ChatContext } from "../../store/ChatContext";
 
 function Profile() {
   // const location = useLocation();
@@ -33,9 +33,10 @@ function Profile() {
   const [doneProfile, setDoneProfile] = useState(false);
 
   const [deletePost, setDeletePost] = useState(null);
-
+  const [friends, setFriends] = useState("");
   const [currentUser1, setCurrentUser] = useState("");
-  const { currentUser,successAlert } = useContext(SocialMediaContext);
+  const { userChats } = useContext(ChatContext);
+  const { currentUser } = useContext(SocialMediaContext);
   const [userPosts, setUserPosts] = useState([]);
   const [postClicked, setPostClicked] = useState();
   const postClickedRef = useRef(null);
@@ -96,7 +97,6 @@ function Profile() {
   }, [postClicked]);
 
   const handleDeletePost = async () => {
-    console.log(deletePost.id);
     if (!currentUser.uid || currentUser.uid !== id) return;
 
     try {
@@ -112,9 +112,7 @@ function Profile() {
       setDeletePost("");
       setPostClicked(null);
       getData();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const writeUserData = () => {
@@ -134,9 +132,7 @@ function Profile() {
       .then(() => {
         setRequestStatus("Pending");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   async function fetchData() {
@@ -151,6 +147,19 @@ function Profile() {
         if (!id) {
           return;
         }
+
+        const docRef1 = doc(db, "userChats", id);
+        onSnapshot(docRef1, (doc) => {
+          let consdd = 0;
+          const count = Object.entries(doc.data());
+          for (let i = 0; i < count.length; i++) {
+            if (count[i][1].userInfo) {
+              consdd++;
+            }
+          }
+          setFriends(consdd);
+        });
+
         const docRef = doc(db, "userChats", currentUser.uid);
         onSnapshot(docRef, (doc) => {
           const data = doc.data();
@@ -167,9 +176,7 @@ function Profile() {
           }
         });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   useEffect(() => {
@@ -185,7 +192,7 @@ function Profile() {
   return (
     <>
       {!doneProfile ? (
-        <div className="row py-4 px-4  profile-main">
+        <div className="row py-4 px-2.5  profile-main">
           <div className="col-xl-4 col-md-6 col-sm-10 mx-auto sub-profile-main">
             <div className="bg-white shadow rounded overflow-hidden">
               <div className="px-4 pt-0 pb-4 bg-dark">
@@ -234,7 +241,7 @@ function Profile() {
                     </small>
                   </li>
                   <li className="list-inline-item">
-                    <h5 className="font-weight-bold mb-0 d-block">84K</h5>
+                    <h5 className="font-weight-bold mb-0 d-block">{friends}</h5>
                     <small className="text-muted">
                       <i className="fa fa-user-circle-o mr-1"></i>Friends
                     </small>
@@ -243,22 +250,22 @@ function Profile() {
               </div>
 
               <div className="bg-light p-4 d-flex justify-content-end text-center profile-item-list">
-                <div class="container">
-                  <div class="btn" onClick={writeUserData}>
+                <div className="container">
+                  <div className="btn" onClick={writeUserData}>
                     <a>
                       {/* {requestStatus} */}
                       {currentUser.uid === id ? "Friends" : `${requestStatus}`}
                     </a>
                   </div>
                   <div
-                    class="btn"
+                    className="btn"
                     onClick={() =>
                       navigate(`/User/${currentUser.displayName}/FriendsLobby`)
                     }
                   >
                     <a>Message</a>
                   </div>
-                  <div class="btn" >
+                  <div className="btn">
                     <a>Share</a>
                   </div>
                 </div>

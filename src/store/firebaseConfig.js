@@ -61,8 +61,7 @@ initializeAuth()
     ("Firebase authentication initialized with browserLocalPersistence");
   })
   .catch((error) => {
-    console.error("Error initializing Firebase authentication:", error);
-  });
+      });
 
 export const provider = new GoogleAuthProvider();
 

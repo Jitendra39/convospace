@@ -5,9 +5,10 @@ import React, {
   useReducer,
   useRef,
 } from "react";
-import { auth, realTimeDataBase } from "./firebaseConfig";
+import { auth, db, realTimeDataBase } from "./firebaseConfig";
 import { child, get, onValue, ref, remove, set } from "firebase/database";
 import Swal from "sweetalert2";
+import { collection, getDocs, query, Timestamp, where } from "firebase/firestore";
 
 export const SocialMediaContext = createContext();
 
@@ -90,9 +91,7 @@ export const SocialMediaContextProvider = ({ children }) => {
         return data;
       } else {
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   //--------------------   Game Start Logic ---------------------//
@@ -111,15 +110,14 @@ export const SocialMediaContextProvider = ({ children }) => {
       p2Status: false,
     })
       .then(() => {
-      successAlert( `Play request has been sent to ${oppData.user.displayName}!  Please refresh the page to start the game.`)
+        successAlert(
+          `Play request has been sent to ${oppData.user.displayName}!  Please refresh the page to start the game.`
+        );
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const gameCheck = async (data) => {
-
     const dbRef = ref(realTimeDataBase, `GameRequest/${data.uid}`);
     return new Promise((resolve, reject) => {
       onValue(
@@ -133,40 +131,78 @@ export const SocialMediaContextProvider = ({ children }) => {
           }
         },
         (error) => {
-          console.error("The read failed: " + error.message);
           reject(error);
         }
       );
     });
   };
 
-const handleDeleteGameRequest = (p1, p2) =>{
-  const dataRef = ref(
-    realTimeDataBase,
-    `GameRequest/${p2}/${p1}`
-  );
-  try {
-   remove(dataRef)
-    return "del"
-  }
-  catch(err){
-      console.log(err)
-  }
-}
+  const handleDeleteGameRequest = (p1, p2) => {
+    const dataRef = ref(realTimeDataBase, `GameRequest/${p2}/${p1}`);
+    try {
+      remove(dataRef);
+      return "del";
+    } catch (err) {}
+  };
 
-const successAlert = (message) =>{
-  Swal.fire({
-    position: "top-end",
-    icon: "success",
-    title: message,
-    showConfirmButton: false,
-    timer: 1800
-  });
-}
+  const successAlert = (message) => {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: message,
+      showConfirmButton: false,
+      timer: 1800,
+    });
+  };
+
+  const handleClickCopy = async (mess) => {
+    await navigator.clipboard.writeText(mess);
+  };
+
+
+
+
+  // -----------------------  Search User ---------------------//
+  const handleSearchUser = async (username) => {
+    return new Promise(async (resolve, reject) => {
+
+		if(!username) return;
+    const q = query(
+      collection(db, "users"),
+      where("displayName", "==", username),
+    );
+ 
+    const q2 = query(
+      collection(db, "users"),
+      where("uid", "==", username),
+    );
+
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+       resolve(doc.data());
+      });
+    } catch (err) {
+     
+    }
+
+    try {
+      const querySnapshot = await getDocs(q2);
+      querySnapshot.forEach((doc) => {
+       resolve(doc.data());
+      });
+    } catch (err) {
+       
+    }
+  })
+  };
+
 
   return (
     <SocialMediaContext.Provider
       value={{
+        handleSearchUser,
+        handleClickCopy,
         successAlert,
         handleDeleteGameRequest,
         handleGameRequest,

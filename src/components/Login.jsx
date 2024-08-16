@@ -7,7 +7,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, db, provider } from "../store/firebaseConfig";
 import Cookies from "universal-cookie";
+import "../styles/common.css";
 import { doc, setDoc } from "firebase/firestore";
+import LoadingSpinner from "./General/LoadingSpinner";
+import ToastNotification from "./Message/Notification";
 function Login() {
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -16,14 +19,14 @@ function Login() {
   useEffect(() => {
     if (currentUser) navigate("/");
   }, []);
-
+  const [showSpinner, setShowSpinner] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
- 
+    setShowSpinner(!showSpinner);
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -36,9 +39,12 @@ function Login() {
       });
 
       "Login successful:", userCredential.user;
+      setShowSpinner(!showSpinner);
+
       navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
+      setShowSpinner(false);
+
       setError(error.message);
     }
   };
@@ -57,70 +63,91 @@ function Login() {
         photoURL: result.user.photoURL,
       });
       navigate("/");
-    } catch (error) {
-      console.error("Authentication Error:", error);
-    }
+    } catch (error) {}
   };
   const testLogin = (e) => {
     setEmail("abcde@gmail.com");
     setPassword("abcde@1234");
     handleLogin(e);
   };
-  
+  const ShowPass = () => {
+    const pass_field = document.querySelector(".pass-key");
+    const showBtn = document.querySelector(".show");
+    if (pass_field.type === "password") {
+      pass_field.type = "text";
+      showBtn.textContent = "HIDE";
+      showBtn.style.color = "#3498db";
+    } else {
+      pass_field.type = "password";
+      showBtn.textContent = "SHOW";
+      showBtn.style.color = "#222";
+    }
+  };
 
-   return (
-    <div class="bg-img2">
-      <div class="content">
-        <header>Login Form</header>
-        <form>
-          <div class="field">
-            <FaUser class="user" />
-            <input
-              type="text"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Email or Phone"
-            />
-          </div>
-          <div class="field space">
-            <FaLock class="user" />
-            <input
-              type="password"
-              class="pass-key"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Password"
-            />
-            
-          </div>
-          <div class="pass">
-            <a href="#">Forgot Password?</a>
-          </div>
-          <div class="field">
-            <input
-              type="button"
-              onClick={(e) => handleLogin(e)}
-              value="LOGIN"
-            />
-          </div>
-          <br/>
-          <div class="field1" onClick={(e) =>testLogin(e)}>
-           <p>TEST</p>
-          </div>
-        </form>
-        <div class="login">Or login with</div>
-        <div class="links">
-          <div class="instagram" onClick={signInWithGoogle}>
-            <FcGoogle class="Google" />
-            <span>Google</span>
+  return (
+    <>
+      {!showSpinner ? (
+        <div className="bg-img2">
+          <div className="content">
+            <header>Login Form</header>
+            <form>
+              <div className="field">
+                <FaUser className="user" />
+                <input
+                  type="text"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="Email or Phone"
+                />
+              </div>
+              <div className="field space">
+                <FaLock className="user" />
+                <input
+                  type="password"
+                  className="pass-key"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Password"
+                />
+                <span className="show" onClick={ShowPass}>
+                  SHOW
+                </span>
+              </div>
+              <div className="pass">
+                <a href="#">Forgot Password?</a>
+              </div>
+              <div className="field">
+                <input
+                  type="button"
+                  onClick={(e) => handleLogin(e)}
+                  value="LOGIN"
+                />
+              </div>
+              <br />
+              <div className="field1" onClick={(e) => testLogin(e)}>
+                <p>TEST</p>
+              </div>
+            </form>
+            <div className="login">Or login with</div>
+            <div className="links">
+              <div className="instagram" onClick={signInWithGoogle}>
+                <FcGoogle className="Google" />
+                <span>Google</span>
+              </div>
+            </div>
+            <div className="signup">
+              Don't have account?
+              <NavLink to="/SignUp">Signup Now</NavLink>
+            </div>
           </div>
         </div>
-        <div class="signup">
-          Don't have account?
-          <NavLink to="/SignUp">Signup Now</NavLink>
+      ) : (
+        <div className="loadingSpinner">
+          <LoadingSpinner />
         </div>
-      </div>
-    </div>
+      )}
+      {error && <ToastNotification notify={error} notificationType={"error"} />}
+    </>
   );
 }
 

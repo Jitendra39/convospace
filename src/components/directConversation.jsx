@@ -17,11 +17,9 @@ function DirectConversation() {
   // const {id} = useParams();
   const { currentUser } = useContext(SocialMediaContext);
   const { data } = useContext(ChatContext);
- 
 
   return (
     <>
- 
       <ChatContextProvider>
         <section className="chat-section">
           <div className="chat-container">

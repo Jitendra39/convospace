@@ -1,76 +1,114 @@
 import { IoSearchOutline } from "react-icons/io5";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import css from "../styles/Search.module.css";
+import { MdDone } from "react-icons/md";
+import Swal from "sweetalert2";
 
+import AddMember from "./GroupChat/AddMember";
 import { SocialMediaContext } from "../store/GeneralStore";
- 
-function Search() {
-  const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
-  const [err, setErr] = useState(false);
-  const { currentUser } = useContext(SocialMediaContext);
+import { ChatContext } from "../store/ChatContext";
+import {
+  handleCreateGroup,
+  handleGroupName,
+  handleGetGroupsData,
+} from "./GroupChat/GroupChatLogic";
+
+function Search({
+  setFetchRender,
+  setAddMemberGpId,
+  setLoadingSpinner,
+  groupName,
+  setGroupName,
+  gpAdmin,
+  AddMemberGpId,
+  groups,
+}) {
+  const { handleSearchUser, currentUser } = useContext(SocialMediaContext);
+  const { userChats } = useContext(ChatContext);
+  const [URL, setURL] = useState();
+  const [username, setUserName] = useState("");
+  const URLS = useLocation();
+  // const [groupName, setGroupName] = useState("");
+  const [searchResult, setSearchResult] = useState("");
 
   const handleSearch = async () => {
-    
+    const data = await handleSearchUser(username);
+    setSearchResult(data);
   };
 
-  const handleKey = (e) => {
-    if (e.code === "Enter") handleSearch();
+  useEffect(() => {
+    if (URLS.pathname.includes("Groups")) {
+      setURL(true);
+    } else {
+      setURL(false);
+    }
+  }, [URLS.pathname]);
+
+  const handleCreateGp = () => {
+    if (AddMemberGpId && gpAdmin !== currentUser.uid) {
+      setGroupName("");
+      return;
+    }
+    const addGpId = AddMemberGpId;
+    handleCreateGroup(
+      setFetchRender,
+      groupName,
+      setLoadingSpinner,
+      setGroupName,
+      currentUser,
+      addGpId,
+      setAddMemberGpId
+    );
   };
-
-  const handleSelect = async () => {
-       
-  };
-
-
 
   return (
     <>
-  
       <div className="content-sidebar-title">
-        <div>Chats</div>
+        <div>{URL ? (groupName ? "Select Members" : "Groups") : "Chats"}</div>
+
+        {URL && (
+          <div
+            className={css.CreateGroup}
+            onClick={() => {
+              groupName ? searchResult : handleGroupName(setGroupName);
+            }}
+          >
+            {groupName ? (
+              <MdDone onClick={() => handleCreateGp()} />
+            ) : (
+              <AiOutlineUsergroupAdd />
+            )}
+          </div>
+        )}
       </div>
       <div className="content-sidebar-form">
         <input
           type="text"
+          onChange={(e) => {
+            groupName && handleSearch(), setUserName(e.target.value);
+          }}
           className="content-sidebar-input"
           placeholder="Search User"
-         />
+        />
         <button
           type="button"
           className="content-sidebar-submit"
+          onClick={handleSearch}
         >
           <IoSearchOutline className="ri-search-line" />
         </button>
       </div>
-{/* 
-      {err && <span>User not found!</span>}
-      {user && (
-        <div className="content-messages">
-          <ul className="content-messages-list">
-            <li onClick={handleSelect}>
-              <a href="#" data-conversation="#conversation-1">
-                <img
-                  className="content-message-image"
-                  src={user.photoURL}
-                  alt=""
-                />
-                <span className="content-message-info">
-                  <span className="content-message-name">
-                    {user.displayName}
-                  </span>
-                  <span className="content-message-text">
-                    Lorem ipsum dolor sit amet consectetur.
-                  </span>
-                </span>
-                <span className="content-message-more">
-                  <span className="content-message-unread">5</span>
-                  <span className="content-message-time">12:30</span>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      )} */}
+
+      {URL && (
+        <AddMember
+          groupName={groupName}
+          userChats={userChats}
+          searchResult={searchResult}
+          groups={groups}
+        />
+      )}
     </>
   );
 }

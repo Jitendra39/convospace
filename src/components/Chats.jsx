@@ -1,23 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SocialMediaContext } from "../store/GeneralStore";
 import { ChatContext } from "../store/ChatContext";
- import '../styles/contentSide.css'
+import "../styles/contentSide.css";
 
 function Chats() {
-
   const [loading, setLoading] = useState(false);
   const { dispatch, userChats } = useContext(ChatContext);
   const { currentUser } = useContext(SocialMediaContext);
 
-
   const handleSelect = (userInfo) => {
-
     dispatch({ type: "CHANGE_USER", payload: userInfo });
   };
 
   return (
     <>
- 
       {loading ? (
         <div className="loading">Loading chats...</div>
       ) : (

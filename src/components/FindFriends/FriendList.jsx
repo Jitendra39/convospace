@@ -27,7 +27,7 @@ function FriendList() {
   const isSmallScreen1 = useMediaQuery("(max-width: 768px)");
   return (
     <>
-      {console.log(tempChat)}
+    
       <List
         sx={{
           width: "100%",

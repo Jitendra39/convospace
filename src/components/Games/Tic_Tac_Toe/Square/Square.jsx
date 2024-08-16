@@ -50,7 +50,6 @@ const Square = ({
   playingAs,
   currentElement,
   finishedArrayState,
-  setFinishedState,
   finishedState,
   id,
   currentPlayer,
@@ -62,11 +61,9 @@ const Square = ({
     const rowIndex = Math.floor(id / 3);
     const colIndex = id % 3;
     const element = gameState[rowIndex][colIndex];
-    if (
-      [element].includes("circle") ||  [element].includes("cross")
-    ) {
+    if ([element].includes("circle") || [element].includes("cross")) {
       return;
-    } 
+    }
 
     if (playingAs !== currentPlayer) {
       return;
@@ -97,10 +94,9 @@ const Square = ({
         let newState = [...prevState];
         const rowIndex = Math.floor(id / 3);
         const colIndex = id % 3;
- 
-          newState[rowIndex][colIndex] = myCurrentPlayer;
-          return newState;
-                
+
+        newState[rowIndex][colIndex] = myCurrentPlayer;
+        return newState;
       });
     }
   };

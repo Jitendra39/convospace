@@ -88,7 +88,6 @@ function ProfileEdit({ setDoneProfile, doneProfile }) {
       }
     } catch (error) {
       setDoneProfile(!doneProfile);
-      console.error("Error updating profile", error);
     }
   };
 

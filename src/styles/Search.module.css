@@ -1,0 +1,19 @@
+.CreateGroup{
+  margin-top: 5px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 12px;
+}
+.CreateGroup:hover{
+  color: #007bff;
+}
+
+.AddMembers{
+  position: absolute;
+  top: 0px;
+  margin: auto;
+}
+
+.addMemberCheckBox{
+  height: 20px;
+}

@@ -12,11 +12,14 @@ import {
 import { db, realTimeDataBase } from "../../store/firebaseConfig";
 import { ref, remove } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../General/LoadingSpinner";
+import "../../styles/common.css";
 
 function NotificationTab({ setNotificationTab, notificationTab }) {
   const [allRequests, setAllRequests] = useState([]);
   const navigate = useNavigate();
   const NotificationTabClickRef = useRef();
+  const [showSpinner, setShowSpinner] = useState(false);
   const { isLessThan768, currentUser, fetchData } =
     useContext(SocialMediaContext);
 
@@ -52,6 +55,7 @@ function NotificationTab({ setNotificationTab, notificationTab }) {
   }, [notificationTab]);
 
   const handleSelect = async (user) => {
+    setShowSpinner(true);
     const combinedId = user.uid + currentUser.uid;
     try {
       const res = await getDoc(doc(db, "chats", combinedId));
@@ -106,8 +110,9 @@ function NotificationTab({ setNotificationTab, notificationTab }) {
         });
       }
       RejectRequest(user);
+      setShowSpinner(false);
     } catch (err) {
-      console.error("Error creating chat: ", err);
+      setShowSpinner(false);
     }
   };
 
@@ -119,65 +124,68 @@ function NotificationTab({ setNotificationTab, notificationTab }) {
     try {
       await remove(dataRef);
       setNotificationTab(false);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   return (
     <>
-      {console.log("AllRequest =", allRequests)}
       {isLessThan768 && <Sidebar />}
-      <div className={css.notificationTabMain}>
-        <div
-          className={css.subNotificationTabMain}
-          ref={NotificationTabClickRef}
-        >
-          <h2>Notifications</h2>
-          <div className={css.contentMessages}>
-            {allRequests &&
-              allRequests.map(([key, req]) => (
-                <ul className={css.contentMessagesList}>
-                  <li className={css.contentMessagesListItem} key={key}>
-                    <a href="#" data-conversation="#conversation-1">
-                      <img
-                        className={css.contentMessageImage}
-                        src={req.photoURL}
-                        alt="not available"
-                      />
-                      <span className={css.contentMessageInfo}>
-                        <span className={css.contentMessageName1}>
-                          {req.displayName}
+      {showSpinner ? (
+        <div className="loadingSpinner">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <div className={css.notificationTabMain}>
+          <div
+            className={css.subNotificationTabMain}
+            ref={NotificationTabClickRef}
+          >
+            <h2>Notifications</h2>
+            <div className={css.contentMessages}>
+              {allRequests &&
+                allRequests.map(([key, req]) => (
+                  <ul className={css.contentMessagesList}>
+                    <li className={css.contentMessagesListItem} key={key}>
+                      <a href="#" data-conversation="#conversation-1">
+                        <img
+                          className={css.contentMessageImage}
+                          src={req.photoURL}
+                          alt="not available"
+                        />
+                        <span className={css.contentMessageInfo}>
+                          <span className={css.contentMessageName1}>
+                            {req.displayName}
+                          </span>
+                          <span className={css.contentMessageText}>
+                            Not available
+                          </span>
                         </span>
-                        <span className={css.contentMessageText}>
-                          Not available
-                        </span>
-                      </span>
 
-                      <span className={css.contentMessageMore}>
+                        <span className={css.contentMessageMore}>
+                          <button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={() => RejectRequest(req)}
+                          >
+                            Reject
+                          </button>
+                        </span>
+
                         <button
                           type="button"
-                          class="btn btn-danger"
-                          onClick={() => RejectRequest(req)}
+                          className="btn btn-success"
+                          onClick={() => handleSelect(req)}
                         >
-                          Reject
+                          Accept
                         </button>
-                      </span>
-
-                      <button
-                        type="button"
-                        class="btn btn-success"
-                        onClick={() => handleSelect(req)}
-                      >
-                        Accept
-                      </button>
-                    </a>
-                  </li>
-                </ul>
-              ))}
+                      </a>
+                    </li>
+                  </ul>
+                ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

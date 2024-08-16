@@ -284,7 +284,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
- 
+
 
 /* start: Globals */
 *, ::before, ::after {
@@ -326,6 +326,10 @@ body {
 
 
 /* start: Sidebar */
+.side-Bar-Scroll{
+    
+}
+
 .chat-sidebar {
     width: 64px;
     /* background-color: var(--slate-100); */
@@ -476,6 +480,9 @@ body {
 
 
 /* start: Conversation */
+
+
+
 .conversation {
     background-color: var(--slate-100);
     height: 100%;
@@ -599,11 +606,14 @@ body {
 }
 .conversation-wrapper {
     list-style-type: none; 
+ 
 }
+ 
 
 .conversation-main  ul{
     list-style-type: none;
     padding: 0rem;
+  
 }
 
 

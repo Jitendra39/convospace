@@ -1,0 +1,10 @@
+
+/* --------------------------Loading Spinner ---------------- */
+.loadingSpinner{
+  position: absolute;
+  top:0px;
+  bottom: 0px;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: rgba(115, 236, 255, 0.7);
+}

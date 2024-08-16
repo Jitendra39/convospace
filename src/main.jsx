@@ -20,6 +20,7 @@ import User from "./components/User.jsx";
 import FindFriends from "./components/FindFriends/FindFriends.jsx";
 import NotificationTab from "./components/NotificationTab/NotificationTab.jsx";
 import TicTacToe from "./components/Games/Tic_Tac_Toe/TicTacToe.jsx";
+import GroupChatMain from "./components/GroupChat/GroupChatMain.jsx";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -40,6 +41,8 @@ root.render(
                 <Route path="Friend_List" element={<FindFriends />} />
                 <Route path="Create Post" element={<CreatePost />} />
                 <Route path="Notification" element={<NotificationTab />} />
+              <Route path="Groups" element={<GroupChatMain />} />
+
               </Route>
               <Route path="/Profile/:id" element={<Profile />} />
               <Route path="*" element={<Home/>} /> 

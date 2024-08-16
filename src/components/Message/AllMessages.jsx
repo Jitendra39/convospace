@@ -1,15 +1,25 @@
 import { arrayRemove, doc, getDoc, updateDoc } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { db } from "../../store/firebaseConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../../styles/AllMessage.module.css";
+import { SocialMediaContext } from "../../store/GeneralStore";
+import { useNavigate } from "react-router-dom";
+import { deleteMessage } from "../GroupChat/GroupChatLogic";
 
-function AllMessages({ message, currentUser, data }) {
+function AllMessages({
+  message,
+  currentUser,
+  data,
+  groupId,
+  handleDeleteElementOfArray,
+}) {
+  const navigate = useNavigate();
   const lastMessageRef = useRef(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [imgClicked, setImgClicked] = useState(false);
-
+  const { handleClickCopy } = useContext(SocialMediaContext);
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -20,25 +30,27 @@ function AllMessages({ message, currentUser, data }) {
 
   const handleDelete = async (message, currentUser) => {
     if (message.senderId === currentUser.uid) {
-      const chatDocRef = doc(db, "chats", data.chatId);
+      if (!message.dates) {
+        const chatDocRef = doc(db, "chats", data.chatId);
+        try {
+          const chatDocSnap = await getDoc(chatDocRef);
 
-      try {
-        const chatDocSnap = await getDoc(chatDocRef);
+          if (chatDocSnap.exists()) {
+            const chatData = chatDocSnap.data();
+            const messages = chatData.messages || [];
 
-        if (chatDocSnap.exists()) {
-          const chatData = chatDocSnap.data();
-          const messages = chatData.messages || [];
+            const messageToDelete = messages.find((m) => m.id === message.id);
 
-          const messageToDelete = messages.find((m) => m.id === message.id);
-
-          if (messageToDelete) {
-            updateDoc(chatDocRef, {
-              messages: arrayRemove(messageToDelete),
-            });
+            if (messageToDelete) {
+              updateDoc(chatDocRef, {
+                messages: arrayRemove(messageToDelete),
+              });
+            }
           }
-        }
-      } catch (err) {
-        console.error("Error deleting message:", err);
+        } catch (err) {}
+      } else {
+        deleteMessage(message.dates, groupId);
+        handleDeleteElementOfArray(message);
       }
     }
   };
@@ -58,11 +70,14 @@ function AllMessages({ message, currentUser, data }) {
         >
           <div className={styles["conversation-item-side"]}>
             <img
+              onClick={() => {
+                message.dates && navigate(`/Profile/${message.senderId}`);
+              }}
               className={styles["conversation-item-image"]}
               src={
                 message.senderId === currentUser.uid
                   ? currentUser.photoURL
-                  : data.user.photoURL
+                  : data && data.user.photoURL
               }
               alt=""
             />
@@ -121,14 +136,19 @@ function AllMessages({ message, currentUser, data }) {
                     <BsThreeDotsVertical className="ri-more-2-line" />
                   </button>
                   <ul className={styles["conversation-item-dropdown-list"]}>
-                    <li>
-                      <a href="#">
+                    <li style={{ paddingLeft: "0" }}>
+                      <a>
                         <i className="ri-share-forward-line"></i> Forward
                       </a>
                     </li>
                     <li onClick={() => handleDelete(message, currentUser)}>
                       <a href="#">
                         <i className="ri-delete-bin-line"></i> Delete
+                      </a>
+                    </li>
+                    <li onClick={() => handleClickCopy(message.text)}>
+                      <a href="#">
+                        <i className="ri-delete-bin-line"></i> Copy
                       </a>
                     </li>
                   </ul>
@@ -141,11 +161,16 @@ function AllMessages({ message, currentUser, data }) {
         <li className={styles["conversation-item"]} ref={lastMessageRef}>
           <div className={styles["conversation-item-side"]}>
             <img
+              onClick={() => {
+                message._id && navigate(`/Profile/${message.senderId}`);
+              }}
               className={styles["conversation-item-image"]}
               src={
                 message.senderId === currentUser.uid
                   ? currentUser.photoURL
-                  : data.user.photoURL
+                  : data
+                  ? data.user.photoURL
+                  : message.photoURL
               }
               alt=""
             />

@@ -28,28 +28,30 @@ function ConversationHeader({ setShowConversation }) {
       {alert && (
         <AlertDialog work={handleDelete} load={setAlert} message={alert} />
       )}
-      <div class="conversation-top">
+      <div className="conversation-top">
         <button
           type="button"
-          class="conversation-back"
+          className="conversation-back"
           onClick={() => {
             setShowConversation(true);
           }}
         >
           <IoArrowBackCircleOutline style={{ fontSize: "2rem" }} />
         </button>
-        <div class="conversation-user">
+        <div className="conversation-user">
           <img
-            class="conversation-user-image"
+            className="conversation-user-image"
             src={data.user.photoURL}
             alt=""
           />
           <div>
-            <div class="conversation-user-name">{data.user.displayName}</div>
-            {/* <div class="conversation-user-status online">online</div> */}
+            <div className="conversation-user-name">
+              {data.user.displayName}
+            </div>
+            {/* <div className="conversation-user-status online">online</div> */}
           </div>
         </div>
-        <div class="conversation-buttons">
+        <div className="conversation-buttons">
           <button type="button">
             <MdPhone className="conversation-buttons-name" />
           </button>
